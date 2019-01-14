@@ -36,39 +36,16 @@ abstract class AbstractObject
      */
     abstract protected function getObjects();
 
+
     /**
-     * Call dynamic methods, return stateObject
+     * Set object name and data
      *
-     * @param  $name
-     * @param  $arguments
+     * @param  EntityInterface $template
      * @return stdClass
      */
-    public function __call($name, $arguments)
+    protected function stateObject(EntityInterface $template): stdClass
     {
-        $object = new stdClass();
-
-        if (is_array($arguments)) {
-            $object->data = $arguments;
-        }
-
-        $object->name = $name;
-
-        return $object;
-    }
-
-    /**
-     * @param  string|array $name
-     * @return stdClass
-     */
-    protected function stateObject($name): stdClass
-    {
-        if (is_array($name)) {
-
-            $this->name(key($name));
-            $this->data(array_values($name));
-        }
-
-        return $this->name($name);
+        return $template->build();
     }
 
 }

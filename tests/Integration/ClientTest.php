@@ -49,28 +49,5 @@ class ClientTest extends TestCase
     }
 
 
-    public function test_create_state_machine()
-    {
 
-        $machine = (new StateMachine\Factory)->create();
-
-        $machine->state($this->state, $data)
-            // define actions or event
-            ->on($this->event->name)
-            // transit to state2
-            ->transitionTo($this->state->state2)
-            // do some thing after creating state machine and before returning machine
-            ->promise(
-                function () {
-                }
-            );
-
-        $machine->resolve("$value");
-
-        // after above codes,
-        // state machine was created
-
-        //visualoize
-        $machine->print();
-    }
 }
