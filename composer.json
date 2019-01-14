@@ -1,6 +1,6 @@
 {
   "name": "azhovan/Stater",
-  "description": "DFA state machine implementation ",
+  "description": "DFA state machine implementation",
   "type": "project",
   "require-dev": {
     "phpunit/phpunit": "^7.5",
