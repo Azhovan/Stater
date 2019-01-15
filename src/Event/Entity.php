@@ -16,6 +16,8 @@ class Entity implements EntityInterface
     }
 
     /**
+     * Build State entity
+     *
      * @return stdClass
      */
     public function build(): stdClass

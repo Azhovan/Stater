@@ -18,13 +18,28 @@ class StateTest extends TestCase
         $this->stateObject = new State();
     }
 
+
+    // input should be array
+    public function test_create_state_need_input_array()
+    {
+        $this->expectException(\TypeError::class);
+        $this->stateObject->create('');
+    }
+
+    // input shoud not be empty
+    public function test_create_state_input_cannot_be_empty()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->stateObject->create([]);
+    }
+
     // the state class must inherit behavior from AbstractObject
     public function test_create_state()
     {
         $this->assertInstanceOf(AbstractObject::class, $this->stateObject);
     }
 
-
+    // creating colelction of state and test they are exist
     public function test_create_function_with_inputs()
     {
         $state = $this->stateObject->create([
@@ -50,19 +65,6 @@ class StateTest extends TestCase
         $this->assertSame("state1", $objects["state1"]->name);
     }
 
-    // input should be array
-    public function test_create_state_need_input_array()
-    {
-        $this->expectException(\TypeError::class);
-        $this->stateObject->create('');
-    }
-
-    // input shoud not be empty
-    public function test_create_state_input_cannot_be_empty()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->stateObject->create([]);
-    }
 
 
 }

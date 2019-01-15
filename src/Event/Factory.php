@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stater\Event;
 
-use Stater\State\AbstractObjectFactory;
+use Stater\AbstractObjectFactory;
 
 /**
  * Class Factory

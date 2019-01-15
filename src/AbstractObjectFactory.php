@@ -1,13 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: asanbar-pc
- * Date: 1/14/19
- * Time: 1:43 PM
- */
 
-namespace Stater\State;
+declare(strict_types=1);
 
+namespace Stater;
 
 abstract class AbstractObjectFactory
 {
