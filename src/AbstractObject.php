@@ -3,15 +3,14 @@
 declare(strict_types=1);
 
 namespace Stater;
-
-use stdClass;
+use Countable;
 
 /**
  * Class AbstractObject
  *
  * @package Stater
  */
-abstract class AbstractObject
+abstract class AbstractObject extends AbstractBuilder implements Accessor, Countable
 {
 
     /**
@@ -29,23 +28,14 @@ abstract class AbstractObject
         return null;
     }
 
-    /**
-     * Access to child property objects
-     *
-     * @return mixed
-     */
-    abstract protected function getObjects();
-
 
     /**
-     * Set object name and data
-     *
-     * @param  EntityInterface $template
-     * @return stdClass
+     * @inheritdoc
      */
-    protected function stateObject(EntityInterface $template): stdClass
+    public function count()
     {
-        return $template->build();
+        return count($this->getObjects());
     }
+
 
 }

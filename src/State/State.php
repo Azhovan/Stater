@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace Stater\State;
 
-use Countable;
 use InvalidArgumentException;
 use Stater\AbstractObject;
-use Stater\EntityInterface;
-use Stater\Event\Entity;
 
-class State extends AbstractObject implements Countable
+class State extends AbstractObject
 {
 
     private $states = [];
@@ -18,9 +15,9 @@ class State extends AbstractObject implements Countable
     /**
      * @param  array $states
      * @throws InvalidArgumentException
-     * @return self
+     * @return AbstractObject
      */
-    public function create(array $states): self
+    public function create(array $states): AbstractObject
     {
         if (empty($states)) {
             throw new InvalidArgumentException(
@@ -39,18 +36,13 @@ class State extends AbstractObject implements Countable
      */
     protected function init(array $states): void
     {
+        //TODO: needs refactor
+        // use composition design pattern instead
         foreach ($states as $state) {
             $this->states[$state] = $this->stateObject(new Entity($state));
         }
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function count()
-    {
-        return count($this->getObjects());
-    }
 
     /**
      * @inheritdoc

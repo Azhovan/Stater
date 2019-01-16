@@ -39,7 +39,7 @@ class ClientTest extends TestCase
 
     public function test_state_factory_return_true_instance()
     {
-        $this->assertInstanceOf(AbstractObject::class, $this->state);
+         $this->assertInstanceOf(AbstractObject::class, $this->state);
     }
 
 

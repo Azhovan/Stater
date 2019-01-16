@@ -15,9 +15,9 @@ class Event extends AbstractObject
     /**
      * @param  array $events
      * @throws InvalidArgumentException
-     * @return self
+     * @return AbstractObject
      */
-    public function create(array $events): self
+    public function create(array $events): AbstractObject
     {
         if (empty($events)) {
             throw new InvalidArgumentException(
@@ -30,25 +30,26 @@ class Event extends AbstractObject
         return $this;
     }
 
-
     /**
      * @param  array $events
      * @return void
      */
     protected function init(array $events): void
     {
+        //TODO: needs refactor
+        // use composition design pattern instead
         foreach ($events as $event) {
-            $this->events[$event] = $this->stateObject($event);
+            $this->events[$event] = $this->stateObject(new Entity($event));
         }
     }
 
+
     /**
-     * Access to child property objects
-     *
-     * @return mixed
+     * @inheritdoc
      */
-    protected function getObjects()
+    public function getObjects()
     {
         return $this->events;
     }
+
 }
