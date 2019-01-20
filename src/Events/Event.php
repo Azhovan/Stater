@@ -2,44 +2,44 @@
 
 declare(strict_types=1);
 
-namespace Stater\State;
+namespace Stater\Events;
 
 use InvalidArgumentException;
 use Stater\AbstractObject;
 
-class State extends AbstractObject
+class Event extends AbstractObject
 {
 
-    private $states = [];
+    private $events = [];
 
     /**
-     * @param  array $states
+     * @param  array $events
      * @throws InvalidArgumentException
      * @return AbstractObject
      */
-    public function create(array $states): AbstractObject
+    public function create(array $events): AbstractObject
     {
-        if (empty($states)) {
+        if (empty($events)) {
             throw new InvalidArgumentException(
                 "input couldn't be empty array"
             );
         }
 
-        $this->init($states);
+        $this->init($events);
 
         return $this;
     }
 
     /**
-     * @param  array $states
+     * @param  array $events
      * @return void
      */
-    protected function init(array $states): void
+    protected function init(array $events): void
     {
         //TODO: needs refactor
         // use composition design pattern instead
-        foreach ($states as $state) {
-            $this->states[$state] = $this->stateObject(new Entity($state));
+        foreach ($events as $event) {
+            $this->events[$event] = $this->stateObject(new Entity($event));
         }
     }
 
@@ -49,7 +49,7 @@ class State extends AbstractObject
      */
     public function getObjects()
     {
-        return $this->states;
+        return $this->events;
     }
 
 }

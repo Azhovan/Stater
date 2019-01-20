@@ -4,17 +4,17 @@ namespace Stater\Machine;
 
 use Closure;
 use Stater\AbstractObject;
+use Stater\Transition;
 
 class StateMachine implements StateMachineInterface
 {
 
     /**
-     * The starting point for transition
+     * Hold all the hash map of state machine
      *
-     * @var AbstractObject
+     * @var array
      */
-
-    private $start;
+    private $map = [];
 
     /**
      * The destination point for transition
@@ -22,7 +22,12 @@ class StateMachine implements StateMachineInterface
      * @var AbstractObject
      */
 
-    private $destination;
+    /**
+     * Starting of the transition node
+     *
+     * @var AbstractObject
+     */
+    private $transition;
 
     /**
      * The Initial point of machine
@@ -32,24 +37,37 @@ class StateMachine implements StateMachineInterface
     private $init;
 
     /**
-     * The Needed event to go to next state
+     * The end state of the machine
      *
-     * @var
+     * @var AbstractObject
      */
-    private $event;
+    private $end;
+
+    public function __construct(Transition $transition)
+    {
+        $this->transition = $transition ?? new Transition();
+    }
 
 
-    public function __construct(AbstractObject $init)
+    /**
+     * Init starting point of the machine
+     *
+     * @param  AbstractObject $init
+     * @return self
+     */
+    public function init(AbstractObject $init)
     {
         $this->init = $init;
+
+        return $this;
     }
 
     /**
      * @inheritdoc
      */
-    public function state(AbstractObject $start): StateMachineInterface
+    public function state(AbstractObject $state): StateMachineInterface
     {
-        $this->start = $start;
+        $this->transition->start($state);
 
         return $this;
     }
@@ -59,30 +77,8 @@ class StateMachine implements StateMachineInterface
      */
     public function on(AbstractObject $event, Closure $condition = null): StateMachineInterface
     {
-
-        if ($condition instanceof Closure) {
-
-            $this->event->condition = $condition;
-        }
-
-        $this->event = $event;
-
-        return $this;
-
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function transitionTo(AbstractObject $destination, Closure $callback): StateMachineInterface
-    {
-
-        if ($callback instanceof Closure) {
-
-            $this->destination->callback = $callback;
-        }
-
-        $this->destination = $destination;
+        $this->transition->event($event)
+            ->condition($condition);
 
         return $this;
     }
@@ -90,18 +86,33 @@ class StateMachine implements StateMachineInterface
     /**
      * @inheritdoc
      */
-    public function promise(Closure $closure): self
+    public function transitionTo(AbstractObject $state, Closure $callback): StateMachineInterface
     {
-        // TODO: Implement promise() method.
+        $this->transition->end($state)
+            ->callback($callback);
+
+        return $this->add();
     }
 
     /**
-     * @inheritdoc
+     * Get the full map of stateMachine
+     *
+     * @return mixed
      */
-    public function resolve($value): self
+    public function get()
     {
-        // TODO: Implement resolve() method.
+        //
     }
+
+    private function add()
+    {
+        $this->map = $this->transition->get();
+        // reset transition object
+        $this->transition->reset();
+
+        return $this;
+    }
+
 
     /**
      * @inheritdoc
@@ -134,4 +145,5 @@ class StateMachine implements StateMachineInterface
     {
         // TODO: Implement count() method.
     }
+
 }

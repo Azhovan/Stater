@@ -19,6 +19,7 @@ $state = (new \Stater\State\Factory)
 
 
 $machine = (new StateMachine\Factory)->create();
+$machine->init($state->init);
 
 $machine->state($state->first)
     // define actions or event
@@ -29,7 +30,7 @@ $machine->state($state->first)
     ->promise(
         function () {
         }
-    ) ->get();
+    )->get();
 
 $machine->resolve("$value");
 

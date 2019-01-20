@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Stater\AbstractObject;
-use Stater\State\State;
+use Stater\States\State;
 
 class StateTest extends TestCase
 {
@@ -64,7 +64,6 @@ class StateTest extends TestCase
         $objects = $state->getObjects();
         $this->assertSame("state1", $objects["state1"]->name);
     }
-
 
 
 }

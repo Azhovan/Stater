@@ -11,6 +11,13 @@ use Stater\AbstractObject;
 interface StateMachineInterface extends IteratorAggregate, Countable, Serializable
 {
 
+    public const state = [
+        "ACTIVE" => 1,
+        "DEACTIVE" => 0,
+        "START" => "start",
+        "END" => "end"
+    ];
+
     /**
      * Create State and attached it to State Machine
      *
@@ -32,25 +39,10 @@ interface StateMachineInterface extends IteratorAggregate, Countable, Serializab
      * Add next state to custom state
      *
      * @param  AbstractObject $destination
-     * @param Closure $callback do some thing after the transition
+     * @param  Closure        $callback    do some thing after the transition
      * @return self
      */
     public function transitionTo(AbstractObject $destination, Closure $callback): self;
-
-    /**
-     * Action after transition
-     *
-     * @param  Closure $closure
-     * @return self
-     */
-    public function promise(Closure $closure): self;
-
-
-    /**
-     * @param  $value
-     * @return self
-     */
-    public function resolve($value): self;
 
 }
 

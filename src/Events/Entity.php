@@ -1,6 +1,6 @@
 <?php
 
-namespace Stater\State;
+namespace Stater\Events;
 
 use Stater\EntityInterface;
 use stdClass;
@@ -45,7 +45,7 @@ class Entity implements EntityInterface
      */
     public function getType()
     {
-        return "state";
+        return "event";
     }
 
     /**
