@@ -21,41 +21,82 @@ class TransitionTest extends TestCase
     }
 
 
-    /**
-     * Get and set starting state on transition
-     */
-    public function test_get_starting_state()
+    public function test_functionality_with_chaining_methods()
     {
         $state = $this->stateObject->create([
-            'state1',
+            'start',
             'state2',
-            'state3'
+            'end'
         ]);
         $objects = $state->getObjects();
 
         $transition = new Transition();
-        $transition->start($objects["state1"]);
-        $this->assertSame('state1', ($transition->start())->name);
 
+        $transition->start($objects["start"])
+            ->end($objects["end"])
+            ->event('custom_event')
+            ->condition(function () {
+                return true;
+            })
+            ->callback(function () {
+                return 5 + 2;
+            });
+
+
+        $this->assertSame('start', ($transition->start())->name);
+
+        $this->assertSame('custom_event', $transition->event());
+
+        $this->assertSame('end', ($transition->end())->name);
+
+        $this->assertSame(true, $transition->condition());
+
+        $this->assertSame(7, $transition->callback());
     }
 
 
-
-    /**
-     * Get and set end state on transition
-     */
-    public function test_get_end_state()
+    public function test_get_the_transition_object_if_end_is_not_set()
     {
+        $this->expectException(\RuntimeException::class);
+
         $state = $this->stateObject->create([
-            'state1',
+            'start',
             'state2',
-            'state3'
+            'end'
         ]);
         $objects = $state->getObjects();
-
         $transition = new Transition();
-        $transition->start($objects["state3"]);
-        $this->assertSame('state3', ($transition->start())->name);
-
+        $transition->get();
     }
+
+    public function test_get_the_transition_object_if_start_is_not_set()
+    {
+        $this->expectException(\RuntimeException::class);
+
+        $state = $this->stateObject->create([
+            'start',
+            'state2',
+            'end'
+        ]);
+        $objects = $state->getObjects();
+        $transition = new Transition();
+        $transition->get();
+    }
+
+    public function test_get_the_transition_object_if_event_is_not_set()
+    {
+        $this->expectException(\RuntimeException::class);
+
+        $state = $this->stateObject->create([
+            'start',
+            'state2',
+            'end'
+        ]);
+        $objects = $state->getObjects();
+        $transition = new Transition();
+        $transition->get();
+    }
+
+
+
 }
