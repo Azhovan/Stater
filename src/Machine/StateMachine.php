@@ -17,12 +17,6 @@ class StateMachine implements StateMachineInterface
     private $map = [];
 
     /**
-     * The destination point for transition
-     *
-     * @var AbstractObject
-     */
-
-    /**
      * Starting of the transition node
      *
      * @var AbstractObject
@@ -43,6 +37,12 @@ class StateMachine implements StateMachineInterface
      */
     private $end;
 
+    /**
+     * Construct state machine by Transition object
+     *
+     * StateMachine constructor.
+     * @param Transition $transition
+     */
     public function __construct(Transition $transition)
     {
         $this->transition = $transition ?? new Transition();
@@ -110,8 +110,6 @@ class StateMachine implements StateMachineInterface
         $this->map = $this->transition->get();
 
         $this->transition->reset();
-
-        return $this;
     }
 
 
@@ -144,7 +142,7 @@ class StateMachine implements StateMachineInterface
      */
     public function count()
     {
-        // TODO: Implement count() method.
+        return count($this->map);
     }
 
 }
