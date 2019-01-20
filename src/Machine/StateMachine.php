@@ -101,13 +101,14 @@ class StateMachine implements StateMachineInterface
      */
     public function get()
     {
-        //
+        return $this->map;
     }
+
 
     private function add()
     {
         $this->map = $this->transition->get();
-        // reset transition object
+
         $this->transition->reset();
 
         return $this;

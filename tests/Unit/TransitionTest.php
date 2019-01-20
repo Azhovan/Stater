@@ -42,7 +42,6 @@ class TransitionTest extends TestCase
                 return 5 + 2;
             });
 
-
         $this->assertSame('start', ($transition->start())->name);
 
         $this->assertSame('custom_event', $transition->event());
@@ -52,6 +51,8 @@ class TransitionTest extends TestCase
         $this->assertSame(true, $transition->condition());
 
         $this->assertSame(7, $transition->callback());
+
+        //$this->assertInstanceOf(Transition::class, $transition->get());
     }
 
 
@@ -65,9 +66,16 @@ class TransitionTest extends TestCase
             'end'
         ]);
         $objects = $state->getObjects();
+
+        $transition = new Transition();
+
+        $transition->start($objects["start"])
+            ->event('custom_event');
+
         $transition = new Transition();
         $transition->get();
     }
+
 
     public function test_get_the_transition_object_if_start_is_not_set()
     {
@@ -79,9 +87,16 @@ class TransitionTest extends TestCase
             'end'
         ]);
         $objects = $state->getObjects();
+
+        $transition = new Transition();
+
+        $transition->end($objects["end"])
+            ->event('custom_event');
+
         $transition = new Transition();
         $transition->get();
     }
+
 
     public function test_get_the_transition_object_if_event_is_not_set()
     {
@@ -93,10 +108,40 @@ class TransitionTest extends TestCase
             'end'
         ]);
         $objects = $state->getObjects();
+
+        $transition = new Transition();
+
+        $transition->start($objects["start"])
+            ->end($objects["end"]);
+
         $transition = new Transition();
         $transition->get();
     }
 
+    public function test_get_transition_matrix()
+    {
+        $state = $this->stateObject->create([
+            'a',
+            'b',
+            'c'
+        ]);
+        $objects = $state->getObjects();
+
+        $transition = new Transition();
+
+        $transition->start($objects["a"])
+            ->end($objects["b"])
+            ->event('custom_event')
+            ->condition(function () {
+                return true;
+            })
+            ->callback(function () {
+                return 5 + 2;
+            });
+
+        $hash = $transition->get();
+        $this->assertSame($hash['a']['b'], $transition);
+    }
 
 
 }
