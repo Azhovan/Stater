@@ -41,9 +41,10 @@ class StateMachine implements StateMachineInterface
      * Construct state machine by Transition object
      *
      * StateMachine constructor.
+     *
      * @param Transition $transition
      */
-    public function __construct(Transition $transition)
+    public function __construct(?Transition $transition)
     {
         $this->transition = $transition ?? new Transition();
     }
@@ -84,6 +85,8 @@ class StateMachine implements StateMachineInterface
     }
 
     /**
+     * siose
+     *
      * @inheritdoc
      */
     public function transitionTo(AbstractObject $state, Closure $callback): StateMachineInterface
@@ -105,11 +108,14 @@ class StateMachine implements StateMachineInterface
     }
 
 
-    private function add()
+    /**
+     * Add transition to State machine
+     *
+     * @param Transition|null $transition
+     */
+    public function add(Transition $transition = null)
     {
-        $this->map = $this->transition->get();
-
-        $this->transition->reset();
+        $this->map = $transition ?? $this->transition->get();
     }
 
 

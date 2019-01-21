@@ -45,7 +45,6 @@ class Transition
         return $this->map;
     }
 
-
     /**
      * Return or set condition,
      * If condition was set before, it will returns, neither it will set
@@ -79,24 +78,6 @@ class Transition
 
         return $this->callback;
     }
-
-
-    /**
-     * Reset transition object
-     *
-     * @return void
-     */
-    public function reset(): void
-    {
-        $reflect = new ReflectionClass($this);
-        $properties = $reflect->getProperties();
-
-        foreach ($properties as $property) {
-            $this->{$property->getName()} = null;
-        }
-
-    }
-
 
     /**
      * Dynamic call to methods
