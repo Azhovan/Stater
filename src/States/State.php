@@ -36,10 +36,14 @@ class State extends AbstractObject
      */
     protected function init(array $states): void
     {
-        //TODO: needs refactor
-        // use composition design pattern instead
         foreach ($states as $state) {
-            $this->states[$state] = $this->stateObject(new Entity($state));
+
+            if (is_array($state)) {
+                $this->states[$state["name"]] = $this->stateObject(new Entity($state));
+
+            } else {
+                $this->states[$state] = $this->stateObject(new Entity($state));
+            }
         }
     }
 

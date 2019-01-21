@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace Stater;
+
 use Countable;
 
 /**
@@ -28,6 +29,11 @@ abstract class AbstractObject extends AbstractBuilder implements Accessor, Count
         return null;
     }
 
+
+    public function __invoke()
+    {
+        return $this->getObjects();
+    }
 
     /**
      * @inheritdoc

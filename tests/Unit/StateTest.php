@@ -65,5 +65,72 @@ class StateTest extends TestCase
         $this->assertSame("state1", $objects["state1"]->name);
     }
 
+    public function test_create_single_input_and_complex_data()
+    {
+        $stateObject = [
+            "name" => "state_name",
+            "data" => [
+                "user" => "test_user",
+                "credit" => "250"
+            ]
+        ];
+
+        /** @var State $state */
+        $state = $this->stateObject->create([
+            $stateObject
+        ]);
+
+        // return staClass object
+        // $state();
+        /*
+         * array(1) {
+                ["state_name"]=>
+                  object(stdClass)#53 (3) {
+                 ["type"]=>
+                 string(5) "state"
+                 ["name"]=>
+                string(10) "state_name"
+                ["data"]=>
+               array(2) {
+                    ["user"]=>
+                    string(9) "test_user"
+                    ["credit"]=>
+                    string(3) "250"
+              }
+           }
+        }*/
+
+        $this->assertSame($stateObject["name"], $state()["state_name"]->name);
+    }
+
+    public function test_create_state_with_array_input_and_complex_data()
+    {
+        $stateObject1 = [
+            [
+                "name" => "state_name1",
+                "data" => [
+                    "user" => "test_user1",
+                    "credit" => "250"
+                ]
+            ]
+        ];
+
+        $stateObject2 = [
+            "name" => "state_name2",
+            "data" => [
+                "user" => "test_user2",
+                "credit" => "100"
+            ]
+        ];
+
+        /** @var State $state */
+        $state = $this->stateObject->create([
+            $stateObject1,
+            $stateObject2,
+        ]);
+
+        $this->assertSame($stateObject2["name"], $state()["state_name2"]->name);
+    }
+
 
 }

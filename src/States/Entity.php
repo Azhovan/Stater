@@ -56,8 +56,8 @@ class Entity implements EntityInterface
     public function build(): stdClass
     {
         if (is_array($this->data)) {
-            $this->entityObject->name = key($this->data);
-            $this->entityObject->data = array_values($this->data);
+            $this->entityObject->name = $this->data["name"];
+            $this->entityObject->data = $this->data["data"];
         } else {
             $this->entityObject->name = $this->data;
         }

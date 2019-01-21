@@ -6,10 +6,10 @@ namespace Stater;
 
 abstract class AbstractObjectFactory
 {
-    public function create(array $data)
+    public function create(?array $data)
     {
         return $this->getObject($data);
     }
 
-    abstract protected function getObject(array $data);
+    abstract protected function getObject(?array $data);
 }
