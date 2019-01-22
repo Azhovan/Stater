@@ -36,10 +36,13 @@ class Event extends AbstractObject
      */
     protected function init(array $events): void
     {
-        //TODO: needs refactor
-        // use composition design pattern instead
         foreach ($events as $event) {
-            $this->events[$event] = $this->stateObject(new Entity($event));
+            if (is_array($event)) {
+                $this->events[$event["name"]] = $this->stateObject(new Entity($event));
+
+            } else {
+                $this->events[$event] = $this->stateObject(new Entity($event));
+            }
         }
     }
 
