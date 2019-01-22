@@ -37,7 +37,6 @@ class State extends AbstractObject
     protected function init(array $states): void
     {
         foreach ($states as $state) {
-
             if (is_array($state)) {
                 $this->states[$state["name"]] = $this->stateObject(new Entity($state));
 

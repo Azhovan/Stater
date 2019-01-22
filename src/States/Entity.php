@@ -2,6 +2,7 @@
 
 namespace Stater\States;
 
+use Stater\DomainObject;
 use Stater\EntityInterface;
 use stdClass;
 
@@ -9,12 +10,12 @@ class Entity implements EntityInterface
 {
 
     /**
-     * @var array|string 
+     * @var array|string
      */
     private $data;
 
     /**
-     * @var stdClass  
+     * @var stdClass
      */
     private $entityObject;
 
@@ -27,7 +28,7 @@ class Entity implements EntityInterface
     {
         $this->data = $data;
 
-        $this->entityObject = new stdClass();
+        $this->entityObject = new DomainObject();
 
         $this->setType();
     }
