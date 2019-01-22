@@ -146,6 +146,14 @@ class StateMachine implements StateMachineInterface
     }
 
     /**
+     * @return null|Transition
+     */
+    public function getTransitionObject()
+    {
+        return $this->transition;
+    }
+
+    /**
      * @inheritdoc
      */
     public function getIterator()

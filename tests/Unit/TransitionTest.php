@@ -54,9 +54,9 @@ class TransitionTest extends TestCase
 
         $this->assertSame('end', ($transition->end())->name);
 
-        $this->assertSame(true, $transition->condition());
+        $this->assertSame(true, $transition->condition()());
 
-        $this->assertSame(7, $transition->callback());
+        $this->assertSame(7, $transition->callback()());
 
     }
 

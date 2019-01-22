@@ -55,7 +55,7 @@ class Transition
     public function condition(Closure $callable = null)
     {
         if ($callable) {
-            $this->condition = $callable();
+            $this->condition = $callable;
             return $this;
         }
 
@@ -72,7 +72,7 @@ class Transition
     public function callback(Closure $callable = null)
     {
         if ($callable) {
-            $this->callback = $callable();
+            $this->callback = $callable;
             return $this;
         }
 
