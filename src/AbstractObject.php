@@ -11,7 +11,7 @@ use Countable;
  *
  * @package Stater
  */
-abstract class AbstractObject extends AbstractBuilder implements Accessor, Countable
+abstract class AbstractObject extends AbstractDomainObject implements Accessor, Countable
 {
 
     /**
