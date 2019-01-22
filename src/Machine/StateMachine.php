@@ -3,7 +3,8 @@
 namespace Stater\Machine;
 
 use Closure;
-use Stater\AbstractObject;
+use Stater\DomainObject;
+use Stater\EntityInterface;
 use Stater\Transition;
 
 class StateMachine implements StateMachineInterface
@@ -19,21 +20,21 @@ class StateMachine implements StateMachineInterface
     /**
      * Starting of the transition node
      *
-     * @var AbstractObject
+     * @var EntityInterface
      */
     private $transition;
 
     /**
      * The Initial point of machine
      *
-     * @var AbstractObject
+     * @var EntityInterface
      */
     private $init;
 
     /**
      * The end state of the machine
      *
-     * @var AbstractObject
+     * @var EntityInterface
      */
     private $end;
 
@@ -49,14 +50,13 @@ class StateMachine implements StateMachineInterface
         $this->transition = $transition ?? new Transition();
     }
 
-
     /**
-     * Init starting point of the machine
+     * Initialize the starting point of the machine
      *
-     * @param  AbstractObject $init
+     * @param DomainObject $init
      * @return self
      */
-    public function init(AbstractObject $init)
+    public function init(DomainObject $init)
     {
         $this->init = $init;
 
@@ -64,9 +64,22 @@ class StateMachine implements StateMachineInterface
     }
 
     /**
+     * Initialize the ending point of the machine
+     *
+     * @param DomainObject $end
+     * @return self
+     */
+    public function end(DomainObject $end)
+    {
+        $this->end = $end;
+
+        return $this;
+    }
+
+    /**
      * @inheritdoc
      */
-    public function state(AbstractObject $state): StateMachineInterface
+    public function state(DomainObject $state): StateMachineInterface
     {
         $this->transition->start($state);
 
@@ -76,7 +89,7 @@ class StateMachine implements StateMachineInterface
     /**
      * @inheritdoc
      */
-    public function on(AbstractObject $event, Closure $condition = null): StateMachineInterface
+    public function on(DomainObject $event, Closure $condition = null): StateMachineInterface
     {
         $this->transition->event($event)
             ->condition($condition);
@@ -89,7 +102,7 @@ class StateMachine implements StateMachineInterface
      *
      * @inheritdoc
      */
-    public function transitionTo(AbstractObject $state, Closure $callback): StateMachineInterface
+    public function transitionTo(DomainObject $state, Closure $callback): StateMachineInterface
     {
         $this->transition->end($state)
             ->callback($callback);
@@ -98,26 +111,39 @@ class StateMachine implements StateMachineInterface
     }
 
     /**
+     * Add transition to State machine
+     *
+     * @param  Transition|null $transition
+     * @return self
+     */
+    public function add(?Transition $transition = null): self
+    {
+        $this->map = $transition ? $transition->get() : $this->transition->get();
+
+        return $this;
+    }
+
+    /**
      * Get the full map of stateMachine
      *
-     * @return mixed
+     * @return array
      */
-    public function get()
+    public function get(): array
     {
         return $this->map;
     }
 
-
     /**
-     * Add transition to State machine
+     * Renew the transition object
      *
-     * @param Transition|null $transition
+     * @return $this
      */
-    public function add(Transition $transition = null)
+    public function build(): self
     {
-        $this->map = $transition ?? $this->transition->get();
-    }
+        $this->transition = new Transition();
 
+        return $this;
+    }
 
     /**
      * @inheritdoc

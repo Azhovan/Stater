@@ -23,11 +23,13 @@ class TransitionTest extends TestCase
 
     public function test_functionality_with_chaining_methods()
     {
-        $state = $this->stateObject->create([
+        $state = $this->stateObject->create(
+            [
             'start',
             'state2',
             'end'
-        ]);
+            ]
+        );
         $objects = $state->getObjects();
 
         $transition = new Transition();
@@ -35,12 +37,16 @@ class TransitionTest extends TestCase
         $transition->start($objects["start"])
             ->end($objects["end"])
             ->event('custom_event')
-            ->condition(function () {
-                return true;
-            })
-            ->callback(function () {
-                return 5 + 2;
-            });
+            ->condition(
+                function () {
+                    return true;
+                }
+            )
+            ->callback(
+                function () {
+                    return 5 + 2;
+                }
+            );
 
         $this->assertSame('start', ($transition->start())->name);
 
@@ -52,7 +58,6 @@ class TransitionTest extends TestCase
 
         $this->assertSame(7, $transition->callback());
 
-        //$this->assertInstanceOf(Transition::class, $transition->get());
     }
 
 
@@ -60,11 +65,13 @@ class TransitionTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
 
-        $state = $this->stateObject->create([
+        $state = $this->stateObject->create(
+            [
             'start',
             'state2',
             'end'
-        ]);
+            ]
+        );
         $objects = $state->getObjects();
 
         $transition = new Transition();
@@ -81,11 +88,13 @@ class TransitionTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
 
-        $state = $this->stateObject->create([
+        $state = $this->stateObject->create(
+            [
             'start',
             'state2',
             'end'
-        ]);
+            ]
+        );
         $objects = $state->getObjects();
 
         $transition = new Transition();
@@ -102,11 +111,13 @@ class TransitionTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
 
-        $state = $this->stateObject->create([
+        $state = $this->stateObject->create(
+            [
             'start',
             'state2',
             'end'
-        ]);
+            ]
+        );
         $objects = $state->getObjects();
 
         $transition = new Transition();
@@ -120,11 +131,13 @@ class TransitionTest extends TestCase
 
     public function test_get_transition_matrix()
     {
-        $state = $this->stateObject->create([
+        $state = $this->stateObject->create(
+            [
             'a',
             'b',
             'c'
-        ]);
+            ]
+        );
         $objects = $state->getObjects();
 
         $transition = new Transition();
@@ -132,12 +145,16 @@ class TransitionTest extends TestCase
         $transition->start($objects["a"])
             ->end($objects["b"])
             ->event('custom_event')
-            ->condition(function () {
-                return true;
-            })
-            ->callback(function () {
-                return 5 + 2;
-            });
+            ->condition(
+                function () {
+                    return true;
+                }
+            )
+            ->callback(
+                function () {
+                    return 5 + 2;
+                }
+            );
 
         $hash = $transition->get();
         $this->assertSame($hash['a']['b'], $transition);

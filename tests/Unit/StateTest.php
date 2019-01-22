@@ -39,14 +39,16 @@ class StateTest extends TestCase
         $this->assertInstanceOf(AbstractObject::class, $this->stateObject);
     }
 
-    // creating colelction of state and test they are exist
+    // creating collection of state and test they are exist
     public function test_create_function_with_inputs()
     {
-        $state = $this->stateObject->create([
-            'state1',
-            'state2',
-            'state3'
-        ]);
+        $state = $this->stateObject->create(
+            [
+                'state1',
+                'state2',
+                'state3'
+            ]
+        );
 
         $this->assertSame(3, count($state));
 
@@ -54,12 +56,16 @@ class StateTest extends TestCase
 
     public function test_create_function_with_existing_index()
     {
-        /** @var State $state */
-        $state = $this->stateObject->create([
-            'state1',
-            'state2',
-            'state3'
-        ]);
+        /**
+         * @var State $state
+         */
+        $state = $this->stateObject->create(
+            [
+                'state1',
+                'state2',
+                'state3'
+            ]
+        );
 
         $objects = $state->getObjects();
         $this->assertSame("state1", $objects["state1"]->name);
@@ -75,12 +81,14 @@ class StateTest extends TestCase
             ]
         ];
 
-        /** @var State $state */
+        /**
+         * @var State $state
+         */
         $state = $this->stateObject->create([
             $stateObject
         ]);
 
-        // return staClass object
+        // return stdClass object
         // $state();
         /*
          * array(1) {
@@ -123,11 +131,15 @@ class StateTest extends TestCase
             ]
         ];
 
-        /** @var State $state */
-        $state = $this->stateObject->create([
-            $stateObject1,
-            $stateObject2,
-        ]);
+        /**
+         * @var State $state
+         */
+        $state = $this->stateObject->create(
+            [
+                $stateObject1,
+                $stateObject2,
+            ]
+        );
 
         $this->assertSame($stateObject2["name"], $state()["state_name2"]->name);
     }
