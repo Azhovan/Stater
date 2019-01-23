@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Stater\Machine;
 
-use Stater\AbstractObjectFactory;
-
-class Factory extends AbstractObjectFactory
+class Factory
 {
     /**
+     * Create state machine with inputs
+     *
      * $machine::create([
      *   [
-     *       "state" => ["name" =>"state1", "model" => []]
+     *       "state" => ["name" =>"state1", "model" => []],
      *       "event" => ["name" =>"event1", "model" => []],
      *       "condition" => closure(),
      *       "callback" => closure(),
@@ -23,12 +23,11 @@ class Factory extends AbstractObjectFactory
      * @param  array $entries
      * @return mixed
      */
-    public function create(?array $entries)
+    public static function create(?array $entries)
     {
-        $machine = parent::create([]);
+        $machine = new StateMachine(null);
 
-
-        if (null === $entries) {
+        if (null === $entries || empty($entries)) {
             return $machine;
         }
 
@@ -57,15 +56,10 @@ class Factory extends AbstractObjectFactory
                     $states($entry["transitionTo"]["name"]),
                     $entry["callback"]
                 )
-                ->build();
+                ->get();
         }
 
-        return $machine->get();
+        return $machine;
     }
 
-
-    protected function getObject(?array $data)
-    {
-        return new StateMachine(null);
-    }
 }

@@ -339,7 +339,7 @@ class StateMachineTest extends TestCase
         $this->expectException(\RuntimeException::class);
 
         $transition = new Transition();
-        $this->stateMachine->add($transition);
+        $this->stateMachine->addTransition($transition);
     }
 
     /**
@@ -493,7 +493,7 @@ class StateMachineTest extends TestCase
             ->state($states()["a"])
             ->on($events()["event_name"])
             ->transitionTo($states()["a"],
-                function () {
+                function ($iput) {
                     return 2;
                 })->get();
 

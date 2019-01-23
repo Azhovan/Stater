@@ -160,5 +160,4 @@ class TransitionTest extends TestCase
         $this->assertInstanceOf(Transition::class, $hash['a']['b']);
     }
 
-
 }

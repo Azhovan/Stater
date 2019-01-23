@@ -5,10 +5,20 @@ namespace Stater\Machine;
 use Closure;
 use Stater\DomainObject;
 use Stater\EntityInterface;
+use Stater\Traits\InstanceFinder;
 use Stater\Transition;
+use Stater\TransitionObject;
 
-class StateMachine implements StateMachineInterface
+/**
+ *
+ * TODO: refactor the name of class to Machine
+ * Class StateMachine
+ * @package Stater\Machine
+ */
+class StateMachine implements StateMachineInterface, Map, TransitionObject
 {
+
+    use InstanceFinder;
 
     /**
      * Hold all the hash map of state machine
@@ -51,12 +61,56 @@ class StateMachine implements StateMachineInterface
     }
 
     /**
-     * Initialize the starting point of the machine
      *
-     * @param DomainObject $init
-     * @return self
+     * @inheritdoc
      */
-    public function init(DomainObject $init)
+    public function can($transition, array $parameters = []): bool
+    {
+        // is it possible to go to the state of reject
+        # stateMachine::can('reject');
+
+        // is it possible to do below transition in this state machine ?
+        # stateMachine::can(new Transition($data), [...data...]) ;
+
+        // if the $transition is not an object of transition class
+        // create an transition object with current state
+
+        //$transition =  $this->_b($transition)->with($parameters);// check the given transition
+
+        if (!$this->object($transition)->instanceOf(Transition::class)) {
+            $transition = $this->getTransitionObject()->make()->with($transition);
+        }
+
+
+        $current = $this->current();
+        $this->_a($transition, $current)->with($parameters);
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function getTransitionObject(): Transition
+    {
+        return $this->transition;
+    }
+
+    /**
+     * Get/Set the current state
+     *
+     * @param DomainObject|null $state
+     * @return DomainObject
+     */
+    public static function current(DomainObject $state = null): DomainObject
+    {
+        // TODO: Implement current() method.
+    }
+
+    /**
+     *
+     * @inheritdoc
+     */
+    public function init(DomainObject $init): StateMachineInterface
     {
         $this->init = $init;
 
@@ -64,12 +118,11 @@ class StateMachine implements StateMachineInterface
     }
 
     /**
-     * Initialize the ending point of the machine
      *
-     * @param DomainObject $end
-     * @return self
+     * @inheritdoc
      */
-    public function end(DomainObject $end)
+
+    public function end(DomainObject $end): StateMachineInterface
     {
         $this->end = $end;
 
@@ -98,7 +151,6 @@ class StateMachine implements StateMachineInterface
     }
 
     /**
-     * siose
      *
      * @inheritdoc
      */
@@ -107,18 +159,16 @@ class StateMachine implements StateMachineInterface
         $this->transition->end($state)
             ->callback($callback);
 
-        return $this->add();
+        return $this->addTransition();
     }
 
     /**
-     * Add transition to State machine
      *
-     * @param  Transition|null $transition
-     * @return self
+     * @inheritdoc
      */
-    public function add(?Transition $transition = null): self
+    public function addTransition(?Transition $transition = null): StateMachineInterface
     {
-        $this->map =  $this->transition->get();
+        $this->map = $this->transition->get();
         return $this;
     }
 
@@ -145,48 +195,26 @@ class StateMachine implements StateMachineInterface
     }
 
     /**
-     * @return null|Transition
+     * @inheritdoc
      */
-    public function getTransitionObject()
+    public function getIterator(): \Iterator
     {
-        return $this->transition;
+        return new \ArrayIterator($this->map);
     }
 
     /**
      * @inheritdoc
      */
-    public function getIterator()
-    {
-        // TODO: Implement getIterator() method.
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function serialize()
-    {
-        // TODO: Implement serialize() method.
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function unserialize($serialized)
-    {
-        // TODO: Implement unserialize() method.
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function count()
+    public function count(): int
     {
         return count($this->map, COUNT_RECURSIVE);
     }
 
-    public function getMap()
+    /**
+     * @inheritdoc
+     */
+    public function getMap(): array
     {
         return $this->map;
     }
-
 }
