@@ -47,14 +47,14 @@ class Factory extends AbstractObjectFactory
 
             $machine
                 ->state(
-                    $states()[$entry["state"]["name"]]
+                    $states($entry["state"]["name"])
                 )
                 ->on(
-                    $event()[$entry["event"]["name"]],
+                    $event($entry["event"]["name"]),
                     $entry["condition"]
                 )
                 ->transitionTo(
-                    $states()[$entry["transitionTo"]["name"]],
+                    $states($entry["transitionTo"]["name"]),
                     $entry["callback"]
                 )
                 ->build();

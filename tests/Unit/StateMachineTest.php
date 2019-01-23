@@ -500,5 +500,72 @@ class StateMachineTest extends TestCase
         $this->assertEquals(2, count($this->stateMachine));
     }
 
+    public function test_get_domain_objects_data()
+    {
+        $state1 = [
+            "name" => "state_1",
+            "data" => [
+                "user" => "test_user1",
+                "credit" => "250"
+            ]
+        ];
+        $state2 = [
+            "name" => "state_2",
+            "data" => [
+                "user" => "test_user2",
+                "credit" => "400"
+            ]
+        ];
+
+        $states = (new \Stater\States\Factory())
+            ->create([
+                $state1,
+                $state2
+            ]);
+
+        $event1 = [
+            "name" => "event_name_1",
+            "data" => [
+                "user" => "jabar_asadi_1",
+                "email" => "asadi.jabar@outlook.com",
+                "credit" => "10000",
+                "availability" => "1-march",
+                "vip" => true
+            ]
+        ];
+
+        $event2 = [
+            "name" => "event_name_2",
+            "data" => [
+                "user" => "jabar_asadi_2",
+                "email" => "asadi.jabar@outlook.com",
+                "credit" => "10000",
+                "availability" => "1-march",
+                "vip" => true
+            ]
+        ];
+
+        $events = (new \Stater\Events\Factory())
+            ->create([
+                $event1,
+                $event2,
+            ]);
+
+
+        $this->assertEquals($events()["event_name_1"], $events("event_name_1"));
+        $this->assertEquals($events()["event_name_2"], $events("event_name_2"));
+
+        $this->assertEquals($states()["state_1"], $states("state_1"));
+        $this->assertEquals($states()["state_2"], $states("state_2"));
+
+
+        $statesArray = ["state_1" => $states()["state_1"], "state_2" => $states()["state_2"]];
+        $this->assertEquals($statesArray, $states("state_1", "state_2"));
+
+        $eventsArray = ["event_name_1" => $events()["event_name_1"], "event_name_2" => $events()["event_name_2"]];
+        $this->assertEquals($eventsArray, $events("event_name_1", "event_name_2"));
+
+    }
+
 
 }

@@ -29,10 +29,40 @@ abstract class AbstractObject extends AbstractDomainObject implements Accessor, 
         return null;
     }
 
-
+    /**
+     * Access to Object data by Index or as an arguments
+     *
+     * @return mixed
+     */
     public function __invoke()
     {
-        return $this->getObjects();
+        try {
+
+            $args = func_get_args();
+
+            // call like $state()["state1"]
+            if (empty($args))
+                return $this->getObjects();
+
+            // call like $state("state1"):
+            elseif (1 == count($args))
+                return ($this->getObjects())[$args[0]];
+
+            // call like $event("event1", "event2");
+            else {
+                $arr = [];
+                foreach ($args as $arg) {
+                    $arr[$arg] = ($this->getObjects())[$arg];
+                }
+
+                return $arr;
+            }
+
+        } catch (\InvalidArgumentException $exception) {
+            throw $exception;
+        }
+
+
     }
 
     /**
