@@ -29,18 +29,18 @@ class Transition
     {
         // check if there is starting point and start or event
         if (null == $this->start()) {
-            throw  new RuntimeException("start state was not set");
+            throw  new RuntimeException("START state was not set");
         }
 
         if (null == $this->end()) {
-            throw  new RuntimeException("end state was not set");
+            throw  new RuntimeException("END state was not set");
         }
 
         if (null == $this->event()) {
-            throw  new RuntimeException("event was not set for this transition");
+            throw  new RuntimeException("EVENT was not set for this transition");
         }
 
-        $this->map[$this->start()->name][$this->end()->name] = $this;
+        $this->map[$this->start()->name][$this->end()->name] = clone $this;
 
         return $this->map;
     }

@@ -102,7 +102,7 @@ class StateMachine implements StateMachineInterface
      *
      * @inheritdoc
      */
-    public function transitionTo(DomainObject $state, Closure $callback): StateMachineInterface
+    public function transitionTo(DomainObject $state, Closure $callback = null): StateMachineInterface
     {
         $this->transition->end($state)
             ->callback($callback);
@@ -118,8 +118,7 @@ class StateMachine implements StateMachineInterface
      */
     public function add(?Transition $transition = null): self
     {
-        $this->map = $transition ? $transition->get() : $this->transition->get();
-
+        $this->map =  $this->transition->get();
         return $this;
     }
 
@@ -138,7 +137,7 @@ class StateMachine implements StateMachineInterface
      *
      * @return $this
      */
-    public function build(): self
+    public function reset(): self
     {
         $this->transition = new Transition();
 
@@ -182,7 +181,12 @@ class StateMachine implements StateMachineInterface
      */
     public function count()
     {
-        return count($this->map);
+        return count($this->map, COUNT_RECURSIVE);
+    }
+
+    public function getMap()
+    {
+        return $this->map;
     }
 
 }

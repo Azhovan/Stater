@@ -157,7 +157,7 @@ class TransitionTest extends TestCase
             );
 
         $hash = $transition->get();
-        $this->assertSame($hash['a']['b'], $transition);
+        $this->assertInstanceOf(Transition::class, $hash['a']['b']);
     }
 
 

@@ -1,0 +1,34 @@
+{
+  "start": {
+    "end": {
+      "start": {
+        "type": "state",
+        "name": "start",
+        "data": {
+          "user": "test_user1",
+          "credit": "250"
+        }
+      },
+      "event": {
+        "type": "event",
+        "name": "event_name",
+        "data": {
+          "user": "jabar_asadi",
+          "email": "asadi.jabar@outlook.com",
+          "credit": "10000",
+          "availability": "1-march",
+          "vip": true
+        }
+      },
+      "end": {
+        "type": "state",
+        "name": "end",
+        "data": {
+          "user": "test_user2",
+          "credit": "400"
+        }
+      },
+      "callback": {}
+    }
+  }
+}
