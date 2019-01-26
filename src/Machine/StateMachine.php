@@ -1,18 +1,18 @@
 <?php
+declare(strict_types=1);
 
 namespace Stater\Machine;
 
 use Closure;
-use Stater\DomainObject;
-use Stater\EntityInterface;
-use Stater\Traits\DecorateData;
-use Stater\Traits\InstanceFinder;
-use Stater\Transition;
-use Stater\TransitionObject;
+use Stater\{
+    DomainObject, EntityInterface, Transition, TransitionObject
+};
+use Stater\Traits\{
+    DecorateData, InstanceFinder
+};
 
 /**
  *
- * TODO: refactor the name of class to Machine
  * Class StateMachine
  * @package Stater\Machine
  */
@@ -95,7 +95,10 @@ class StateMachine implements StateMachineInterface, Map, TransitionObject
      */
     public function with(array $parameters = [])
     {
-        $decorated = $this->decorate($parameters, ["condition" => "Closure", "callback" => "Closure"]);
+        $decorated = $this->decorate($parameters, [
+            "condition" => "Closure",
+            "callback" => "Closure"
+        ]);
 
         if (null == $this->moveTo || null == $this->transition) {
             return false;
@@ -116,8 +119,6 @@ class StateMachine implements StateMachineInterface, Map, TransitionObject
      */
     private function apply($callback)
     {
-        // call back should be run Async
-        // currently is Sync
         $result = $this->transition->callback($callback);
 
         $this->moveTo = null;
