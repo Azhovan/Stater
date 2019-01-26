@@ -24,7 +24,7 @@ trait DecorateData
      * Create data type with given type
      *
      * @param string $type
-     * @return \Closure
+     * @return \Closure|array
      */
     private function make(string $type)
     {
@@ -32,6 +32,8 @@ trait DecorateData
             return (function ($inputs) {
                 return $inputs;
             });
+        } else if (strtolower($type) == "array") {
+            return [];
         }
     }
 

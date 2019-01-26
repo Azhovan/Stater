@@ -5,11 +5,17 @@ declare(strict_types=1);
 namespace Stater;
 
 use Closure;
-use InvalidArgumentException;
 use RuntimeException;
 
 class Transition
 {
+
+    /**
+     * The Transition error object
+     *
+     * @var DomainObject
+     */
+    private $error;
 
     /**
      * Hold all the hash map of state machine
@@ -17,6 +23,14 @@ class Transition
      * @var array
      */
     private $map = [];
+
+    /**
+     * Transition constructor.
+     */
+    public function __construct()
+    {
+        $this->error = new DomainObject();
+    }
 
     /**
      * @return Transition
@@ -52,23 +66,6 @@ class Transition
     }
 
     /**
-     * Return or set condition,
-     * If condition was set before, it will returns, neither it will set
-     *
-     * @param  Closure $callable
-     * @return mixed
-     */
-    public function condition(Closure $callable = null)
-    {
-        if ($callable) {
-            $this->condition = $callable;
-            return $this;
-        }
-
-        return $this->condition;
-    }
-
-    /**
      * Return or set callback,
      * If condition was set before, it will returns, neither it will set
      *
@@ -83,6 +80,52 @@ class Transition
         }
 
         return $this->callback;
+    }
+
+    /**
+     * Run condition with parameters
+     *
+     * @param array $parameters
+     * @return mixed
+     * @throws \Exception|InvalidArgumentException
+     */
+    public function conditionWith(array $parameters)
+    {
+        $closure = $this->condition();
+
+        try {
+
+            if (empty($parameters))
+                return $closure();
+
+            return $closure(extract($parameters));
+
+        } catch (\ArgumentCountError $invalid) {
+            return false;
+
+        } catch (\InvalidArgumentException $invalid) {
+            return false;
+
+        } catch (\Exception $exception) {
+            throw $exception;
+        }
+    }
+
+    /**
+     * Return or set condition,
+     * If condition was set before, it will returns, neither it will set
+     *
+     * @param  Closure $callable
+     * @return mixed
+     */
+    public function condition(Closure $callable = null)
+    {
+        if ($callable) {
+            $this->condition = $callable;
+            return $this;
+        }
+
+        return $this->condition;
     }
 
     /**
@@ -104,5 +147,7 @@ class Transition
 
         throw new InvalidArgumentException("more than one argument not supported");
     }
+
+
 
 }

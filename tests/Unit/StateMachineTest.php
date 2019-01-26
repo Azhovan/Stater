@@ -568,13 +568,12 @@ class StateMachineTest extends TestCase
     {
         $this->seed_state_machine();
 
-        $t1 = $this->stateMachine->can("a", "a");
         $t2 = $this->stateMachine->can("a", "b");
         $t3 = $this->stateMachine->can("b", "c");
         $t4 = $this->stateMachine->can("c", "d");
         $t5 = $this->stateMachine->can("d", "e");
         $t6 = $this->stateMachine->can("e", "e");
-        $this->assertTrue($t1 and $t2 and $t3 and $t4 and $t5 and $t6);
+        $this->assertTrue($t2 and $t3 and $t4 and $t5 and $t6);
 
 
         $t1 = $this->stateMachine->can("a", "c");
@@ -658,18 +657,20 @@ class StateMachineTest extends TestCase
         // define a => a
         $this->stateMachine
             ->state($states("a"))
-            ->on($events("event_name"), function () {
-            })
+            ->on($events("event_name"),
+                function ($input1, $input2) {
+                    return (!$input1 and $input2);
+                })
             ->transitionTo($states("a"),
-                function ($input) {
-                    return 4;
+                function () {
+                    return 1;
                 })->get();
         // define a => b
         $this->stateMachine
             ->state($states("a"))
             ->on($events("event_name"))
             ->transitionTo($states("b"),
-                function ($input) {
+                function () {
                     return 4;
                 })->get();
         // define b => c
@@ -677,7 +678,7 @@ class StateMachineTest extends TestCase
             ->state($states("b"))
             ->on($events("event_name"))
             ->transitionTo($states("c"),
-                function ($input) {
+                function () {
                     return 4;
                 })->get();
 
@@ -686,7 +687,7 @@ class StateMachineTest extends TestCase
             ->state($states("c"))
             ->on($events("event_name"))
             ->transitionTo($states("d"),
-                function ($input) {
+                function () {
                     return 4;
                 })->get();
         // define d => e
@@ -694,7 +695,7 @@ class StateMachineTest extends TestCase
             ->state($states("d"))
             ->on($events("event_name"))
             ->transitionTo($states("e"),
-                function ($input) {
+                function () {
                     return 4;
                 })->get();
         // define e => e
@@ -702,10 +703,24 @@ class StateMachineTest extends TestCase
             ->state($states("e"))
             ->on($events("event_name"))
             ->transitionTo($states("e"),
-                function ($input) {
+                function () {
                     return 4;
                 })->get();
     }
+
+    /*public function test_check_state_machine_to_stop_on_false_condition()
+    {
+        $this->seed_state_machine();
+
+        $t = $this->stateMachine->can("a", "a", [
+            "condition" => [
+                "param1" => 1,
+                "param2" => 2
+            ]
+        ]);
+
+        $this->assertTrue($t);
+    }*/
 
 
 }

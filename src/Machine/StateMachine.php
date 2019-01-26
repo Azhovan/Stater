@@ -95,16 +95,16 @@ class StateMachine implements StateMachineInterface, Map, TransitionObject
      */
     public function with(array $parameters = [])
     {
-        $decorated = $this->decorate($parameters, [
-            "condition" => "Closure",
-            "callback" => "Closure"
-        ]);
-
         if (null == $this->moveTo || null == $this->transition) {
             return false;
         }
 
-        if (!$this->transition->condition($decorated['condition'])) {
+        $decorated = $this->decorate($parameters, [
+            "condition" => "array",
+        ]);
+
+        // the better call is $this->transition->condition()->with(...)
+        if (!$this->transition->conditionWith($decorated['condition'])) {
             return false;
         }
 
