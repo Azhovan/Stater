@@ -225,7 +225,6 @@ class StateMachineTest extends TestCase
         $this->assertFalse($condition(21));
     }
 
-
     public function test_set_end_state_on_transition()
     {
         $startState = [
@@ -275,7 +274,6 @@ class StateMachineTest extends TestCase
 
         $this->assertEquals($transitionObject->end(), $states()["end"]);
     }
-
 
     public function test_set_end_state_on_transition_will_callback()
     {
@@ -400,7 +398,6 @@ class StateMachineTest extends TestCase
         // we have two states in the machine
         $this->assertSame(2, count($machine));
     }
-
 
     public function test_reset_function_will_renew_the_transition_object()
     {
@@ -565,6 +562,149 @@ class StateMachineTest extends TestCase
         $eventsArray = ["event_name_1" => $events()["event_name_1"], "event_name_2" => $events()["event_name_2"]];
         $this->assertEquals($eventsArray, $events("event_name_1", "event_name_2"));
 
+    }
+
+    public function test_check_go_to_next_state()
+    {
+        $this->seed_state_machine();
+
+        $t1 = $this->stateMachine->can("a", "a");
+        $t2 = $this->stateMachine->can("a", "b");
+        $t3 = $this->stateMachine->can("b", "c");
+        $t4 = $this->stateMachine->can("c", "d");
+        $t5 = $this->stateMachine->can("d", "e");
+        $t6 = $this->stateMachine->can("e", "e");
+        $this->assertTrue($t1 and $t2 and $t3 and $t4 and $t5 and $t6);
+
+
+        $t1 = $this->stateMachine->can("a", "c");
+        $t2 = $this->stateMachine->can("c", "b");
+        $t3 = $this->stateMachine->can("e", "c");
+        $t4 = $this->stateMachine->can("c", "a");
+        $t5 = $this->stateMachine->can("d", "e");
+        $t6 = $this->stateMachine->can("e", "e");
+        $this->assertFalse($t1 and $t2 and $t3 and $t4 and $t5 and $t6);
+
+        $t1 = $this->stateMachine->can("a", "c");
+        $t2 = $this->stateMachine->can("c", "b");
+        $this->assertFalse($t1 and $t2 and $t3 and $t4 and $t5 and $t6);
+
+
+    }
+
+    private function seed_state_machine()
+    {
+        $st1 = [
+            "name" => "a",
+            "data" => [
+                "user" => "test_user1",
+                "credit" => "250"
+            ]
+        ];
+        $st2 = [
+            "name" => "b",
+            "data" => [
+                "user" => "test_user2",
+                "credit" => "400"
+            ]
+        ];
+        $st3 = [
+            "name" => "c",
+            "data" => [
+                "user" => "test_user3",
+                "credit" => "400"
+            ]
+        ];
+        $st4 = [
+            "name" => "d",
+            "data" => [
+                "user" => "test_user4",
+                "credit" => "400"
+            ]
+        ];
+        $st5 = [
+            "name" => "e",
+            "data" => [
+                "user" => "test_user4",
+                "credit" => "400"
+            ]
+        ];
+
+        $states = (new \Stater\States\Factory())
+            ->create([
+                $st1,
+                $st2,
+                $st3,
+                $st4,
+                $st5,
+            ]);
+
+        $event = [
+            "name" => "event_name",
+            "data" => [
+                "user" => "jabar_asadi",
+                "email" => "asadi.jabar@outlook.com",
+                "credit" => "10000",
+                "availability" => "1-march",
+                "vip" => true
+            ]
+        ];
+
+        $events = (new \Stater\Events\Factory())
+            ->create([
+                $event
+            ]);
+
+        // define a => a
+        $this->stateMachine
+            ->state($states("a"))
+            ->on($events("event_name"), function () {
+            })
+            ->transitionTo($states("a"),
+                function ($input) {
+                    return 4;
+                })->get();
+        // define a => b
+        $this->stateMachine
+            ->state($states("a"))
+            ->on($events("event_name"))
+            ->transitionTo($states("b"),
+                function ($input) {
+                    return 4;
+                })->get();
+        // define b => c
+        $this->stateMachine
+            ->state($states("b"))
+            ->on($events("event_name"))
+            ->transitionTo($states("c"),
+                function ($input) {
+                    return 4;
+                })->get();
+
+        // define c => d
+        $this->stateMachine
+            ->state($states("c"))
+            ->on($events("event_name"))
+            ->transitionTo($states("d"),
+                function ($input) {
+                    return 4;
+                })->get();
+        // define d => e
+        $this->stateMachine
+            ->state($states("d"))
+            ->on($events("event_name"))
+            ->transitionTo($states("e"),
+                function ($input) {
+                    return 4;
+                })->get();
+        // define e => e
+        $this->stateMachine
+            ->state($states("e"))
+            ->on($events("event_name"))
+            ->transitionTo($states("e"),
+                function ($input) {
+                    return 4;
+                })->get();
     }
 
 
