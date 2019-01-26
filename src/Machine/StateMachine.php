@@ -5,6 +5,7 @@ namespace Stater\Machine;
 use Closure;
 use Stater\DomainObject;
 use Stater\EntityInterface;
+use Stater\Traits\DecorateData;
 use Stater\Traits\InstanceFinder;
 use Stater\Transition;
 use Stater\TransitionObject;
@@ -18,7 +19,7 @@ use Stater\TransitionObject;
 class StateMachine implements StateMachineInterface, Map, TransitionObject
 {
 
-    use InstanceFinder;
+    use InstanceFinder, DecorateData;
 
     /**
      * Hold all the hash map of state machine
@@ -27,12 +28,19 @@ class StateMachine implements StateMachineInterface, Map, TransitionObject
      */
     private $map = [];
 
-    /**
-     * Starting of the transition node
+    /*
+     * Transition per cell
      *
-     * @var EntityInterface
+     * @var Transition
      */
-    private $transition;
+    private $transition = null;
+
+    /**
+     * Handle Transition behaviour
+     *
+     * @var Transition
+     */
+    private $transitionObject;
 
     /**
      * The Initial point of machine
@@ -40,70 +48,120 @@ class StateMachine implements StateMachineInterface, Map, TransitionObject
      * @var EntityInterface
      */
     private $init;
-
     /**
      * The end state of the machine
      *
      * @var EntityInterface
      */
     private $end;
+    /**
+     * Decide to go to next state
+     *
+     * @var bool
+     */
+    private $moveTo = null;
 
     /**
      * Construct state machine by Transition object
      *
      * StateMachine constructor.
      *
-     * @param Transition $transition
+     * @param null|Transition $transitionObject
      */
-    public function __construct(?Transition $transition)
+    public function __construct(?Transition $transitionObject)
     {
-        $this->transition = $transition ?? new Transition();
+        $this->transitionObject = $transitionObject ?? new Transition();
     }
 
     /**
      *
      * @inheritdoc
      */
-    public function can($transition, array $parameters = []): bool
+    public function can($initial, $next, array $parameters = []): bool
     {
-        // is it possible to go to the state of reject
-        # stateMachine::can('reject');
+        return $this->move($initial, $next)->with($parameters);
 
-        // is it possible to do below transition in this state machine ?
-        # stateMachine::can(new Transition($data), [...data...]) ;
-
-        // if the $transition is not an object of transition class
-        // create an transition object with current state
-
-        //$transition =  $this->_b($transition)->with($parameters);// check the given transition
-
-        if (!$this->object($transition)->instanceOf(Transition::class)) {
-            $transition = $this->getTransitionObject()->make()->with($transition);
-        }
-
-
-        $current = $this->current();
-        $this->_a($transition, $current)->with($parameters);
+        // stateMachine::can(new Transition($data), [...data...]) ;
+        //if (!$this->object($next)->instanceOf(Transition::class)) {
+        //
+        //}
     }
 
+    /**
+     * Use parameters to change the state of state machine
+     *
+     * @param array $parameters
+     * @return bool
+     */
+    public function with(array $parameters = [])
+    {
+        $decorated = $this->decorate($parameters, ["condition" => "Closure", "callback" => "Closure"]);
+
+        if (null == $this->moveTo || null == $this->transition) {
+            return false;
+        }
+
+        if (!$this->transition->condition($decorated['condition'])) {
+            return false;
+        }
+
+        return $this->apply($decorated['callback']);
+    }
+
+    /**
+     * Apply changes to state machine
+     *
+     * @param $callback
+     * @return mixed
+     */
+    private function apply($callback)
+    {
+        // call back should be run Async
+        // currently is Sync
+        $result = $this->transition->callback($callback);
+
+        $this->moveTo = null;
+        $this->transition = null;
+
+        return (bool)$result;
+    }
+
+    /**
+     * Could to go to next state
+     *
+     * @param $initial
+     * @param string $next
+     * @return StateMachine
+     */
+    private function move($initial, string $next)
+    {
+        $map = $this->getMap();
+
+        if (!isset($map[$initial][$next])) {
+            $this->moveTo = false;
+
+        } else {
+            $this->moveTo = $next;
+            $this->transition = $map[$initial][$next];
+        }
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getMap(): array
+    {
+        return $this->map;
+    }
 
     /**
      * @inheritdoc
      */
     public function getTransitionObject(): Transition
     {
-        return $this->transition;
-    }
-
-    /**
-     * Get/Set the current state
-     *
-     * @param DomainObject|null $state
-     * @return DomainObject
-     */
-    public static function current(DomainObject $state = null): DomainObject
-    {
-        // TODO: Implement current() method.
+        return $this->transitionObject;
     }
 
     /**
@@ -134,7 +192,7 @@ class StateMachine implements StateMachineInterface, Map, TransitionObject
      */
     public function state(DomainObject $state): StateMachineInterface
     {
-        $this->transition->start($state);
+        $this->transitionObject->start($state);
 
         return $this;
     }
@@ -144,7 +202,7 @@ class StateMachine implements StateMachineInterface, Map, TransitionObject
      */
     public function on(DomainObject $event, Closure $condition = null): StateMachineInterface
     {
-        $this->transition->event($event)
+        $this->transitionObject->event($event)
             ->condition($condition);
 
         return $this;
@@ -156,7 +214,7 @@ class StateMachine implements StateMachineInterface, Map, TransitionObject
      */
     public function transitionTo(DomainObject $state, Closure $callback = null): StateMachineInterface
     {
-        $this->transition->end($state)
+        $this->transitionObject->end($state)
             ->callback($callback);
 
         return $this->addTransition();
@@ -168,7 +226,7 @@ class StateMachine implements StateMachineInterface, Map, TransitionObject
      */
     public function addTransition(?Transition $transition = null): StateMachineInterface
     {
-        $this->map = $this->transition->get();
+        $this->map = $this->transitionObject->get();
         return $this;
     }
 
@@ -189,7 +247,7 @@ class StateMachine implements StateMachineInterface, Map, TransitionObject
      */
     public function reset(): self
     {
-        $this->transition = new Transition();
+        $this->transitionObject = new Transition();
 
         return $this;
     }
@@ -208,13 +266,5 @@ class StateMachine implements StateMachineInterface, Map, TransitionObject
     public function count(): int
     {
         return count($this->map, COUNT_RECURSIVE);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getMap(): array
-    {
-        return $this->map;
     }
 }

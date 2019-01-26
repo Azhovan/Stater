@@ -14,19 +14,12 @@ interface StateMachineInterface extends IteratorAggregate, Countable
     /**
      * Check the feasibility of given transition on current state
      *
-     * @param Transition|string $transition
+     * @param $initial
+     * @param $next
      * @param array $parameters
      * @return bool
      */
-    public function can($transition, array $parameters = []): bool;
-
-    /**
-     * Get/Set the current state
-     *
-     * @param DomainObject|null $state
-     * @return DomainObject
-     */
-    public static function current(DomainObject $state = null): DomainObject;
+    public function can($initial, $next, array $parameters = []): bool;
 
     /**
      * Initialize the starting state
