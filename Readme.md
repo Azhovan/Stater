@@ -29,11 +29,12 @@ Getting started
 ```
 
 ### Define States
-An `state` in **Stater** can be just and string or even a complex data structure.
 
 Defining a `state` in both is very easy step, you can use `state factory` class or directly by
-using `State` class:
- 
+using `State` class. A `state` in **Stater** can be just and simple primitive `string` or
+even a complex `aray`.
+
+Define a state with complex data format:
 ```php
 $state = [
             "name" => "state_name1",
@@ -48,12 +49,16 @@ $state = [
         
 ``` 
 
-or very simple just a name:
+Define simple `state`: 
 ```php
 $state = ["state_name1"]
 ```
-Creating `state` is very easy step. There are two ways.to convert these data structures 
-simply call `state factory` class :
+
+### Creating State Object
+
+There are two ways.
+
+1. simply call to `state factory` class :
 
 ```php
 $states = (new \Stater\States\Factory())
@@ -64,14 +69,14 @@ $states = (new \Stater\States\Factory())
                 ...
             ]);
 ```
-or you can use directly State class
+
+2. Use `State class`
 ```php
 $st = new Stater\States\State();
-$state = $st->create(
-            [
-                'state1', // the name of the state1 (Mandatory)
-                'state2', // the name of the state2 (Mandatory)
-                'state3'  // the name of the state3 (Mandatory)
+$state = $st->create([
+                'state1', // the name of the state1
+                'state2', // the name of the state2 
+                'state3'  // the name of the state3
             ]
         );
         
@@ -79,15 +84,32 @@ $state = $st->create(
 $st = ["state_name1"];
 $state = $st->create($st);
 ```
-remember that, any state at least should has `name` as field (when you are just use string as the name,
-it will be used automatically)
+Every `state` has two fields:
+- name (mandatory) 
+- data (optional)
 
-The returned object by `factory` class or `Stater\States\State` class is very useful since
-you want to access to different states when creating mass states. 
+When you create simple states like `$st = ["state_name1"]` the `name` will be set automatically.
+in case of complex states, you need to declare `data` field to keep those data tracked.
+for example data block will hold the extra information about the state 
+
+```php
+$state = [
+            "name" => "state_name1",
+            "data" => [
+                "info" => "25-54-444",
+                "link" => "www.google.com",
+                ...
+                ...
+            ]
+        ];
+```
+
+The returned object by `factory` class or `Stater\States\State` class may be used to 
+access to state objects. 
 
 ```php
 $st = new Stater\States\State();
-$state = $st->create(
+$states = $st->create(
             [
                 'state1', // the name of the state1 (Mandatory)
                 'state2', // the name of the state2 (Mandatory)
@@ -95,13 +117,24 @@ $state = $st->create(
             ]
         );
         
-// FORM 1
-$stateObject = $state("state1") ;   
+// get the state object for state1
+$stateObject = $states("state1") ;
 
-// FORM 2
-$stateObject = $state()["state1"] ;
+//get name 
+$stateObject->name;
 
-$allStates = $state();
+//get data if exists
+$stateObject->data
+
+// get portion of states
+// this will return an array, consisting of state1 and state2 object
+$stateObject = $states("state1", "state2") ;  
+
+// get the state object for state1
+$stateObject = $states()["state1"] ;
+
+// get all state objects
+$allStates = $states();
 
 ...
 ``` 
@@ -132,12 +165,13 @@ So you have the idea!.
 
 
 ### Define Events
-`events` are actions which are needed to start a transition. with simple language, suppose 
-there is transition like `a --------> b`, conceptually some things should happen when this Transition happend
-it called `Event`. it is like an action.
+Events are actions which are needed to start a transition. suppose there is transition
+like `a -----> b`, to change the state from `a` to `b` some action should happened (like event, or action by user)
 
-Event's functionality are totally like states, feel free to play with them.
-
+From modeling perspective, `Events` are like `States` in **Stater**. Both of them are `DomainObject`. They are objects 
+which created, initialized, refined, etc.What really make them different is how to use these concepts inside the state machine.
+So all the functionality for Events are exact like the State.
+ 
 ```php
 $event = [
             "name" => "event_name",
@@ -157,13 +191,24 @@ $event = [
          $event
       ]);
       
-  // FORM 1
-  $eventObject = $event("event_name") ;   
-  
-  // FORM 2
-  $stateObject = $event()["event_name"] ;
-  
-  $allEvents = $event();
+// get the event object for event1
+$eventObject = $events("event1") ; 
+
+//get name 
+$eventObject->name;
+
+//get data if exists
+$eventObject->data
+
+// get portion of events
+// this will return an array, consisting of event1 and event2 object
+$eventObject = $events("event1", "event2") ;  
+
+// get the event object for event1
+$eventObject = $events()["event1"] ;
+
+// get all event2 objects
+$allEvent = $events();
   
   ...
   ...
@@ -171,16 +216,22 @@ $event = [
 
 ```
 ### Initializing StateMachine
-To defining state machine, you need to define `state(s)` and `evenet(s)` and use 
-state machine functionality. Remember that, creating any state machine needs 2 states at least
+There are few steps:
+- Create event(s)
+  - there is no two event with same name
+  - define one event per transition 
+- Create State(s)
+  - there is no two state with same name
+  - define 2 states per transition (**start** of the transition, **end** of the transition)
+- Attach Them to State Machine
 
-creating machine, can be possible in two ways
-1. step by step with state Machine object
-2. mass create by factory class
+Two way to create state machine object
+1. By State Machine class
+2. By factory class
 
 lets explore all
 
-**Creating state machine step by step**
+#### Creating state machine step by step
 
 ```php
 $stateMachine = new StateMachine();
@@ -202,27 +253,42 @@ $stateMachine
 
 ```
 
-**state** function 
-It will receive a state (you created it based on mentioned instructions), and set it as 
-the starting point of transition.
+##### state(...) function 
 
-**on** function
-It will receive an event (as an action to doing the transition), and `callback` function.
-the `callback` function is optional and it is responsible for **validate** the transition
+Set the starting point of transition.
+
+##### on(...) function
+
+Set the event of transition with conditions.
+It will receive an event, and `callback` function.
+the `callback` function is optional and it is responsible for **validation**.
 it is an **GUARD** to protect the transition based on your definition.The callback function
-is `Closure`, so you can pass any parameter to it or use any variables in it's scope.
-when a transition happened, client need to pass needed parameters (if defined in its definition)
+is a `Closure`, so you can pass any parameter to it or use any variables in it's scope.
+when a transition happened, caller routine needs to pass required parameters (if defined in its definition)
 to state machine.
 
-**transitionTo** function 
+##### transitionTo(...)  function 
+
+Set the end point of transition.
 It will receive a state as end of transition plus `Closure` as callback after transition 
-finished. it is very helpful if you want to log something, hite external endpoint,... after transition
-completed.
+finished. use it to log, hit external endpoint,... after transition completed.
 
-There are many examples placed in `tests/Unit/StateMachineTest.php`, feel free to check those function.
+examples :`tests/Unit/StateMachineTest.php`.
 
-**Creating state machine by factory class**
-This option is useful when you need to create whole the state machine in one step (from config file or database)
+##### get() function
+Return the state machine mapp. this is associated array, which every cell contains `Transition` objects. 
+
+```php
+
+$map = $stateMachin->get(); 
+
+// dump Transition object
+var_dump($map["state1_name"]["state2_name"] ); 
+
+```
+
+#### Creating state machine by factory class 
+This option is useful when you need to create whole the state machine in one step (load the data from config files, database, ...)
 
 ```php
 
@@ -244,15 +310,17 @@ $machine = Stater\Machine\Factory::create([
 
 ```
 
-### Validation
-Validation is almost the propose of the whole codes!. after creating state machine with 
-above instructions, supose there is `a --------> b` transition,to check that simply do like : 
+#### Validation
+Validation is very simple, just like below:
+
 ```php
+// is it possible to go from state "a" to state "b"
+// there is no condition here, means there is protection. just feasibility will checked
 $stateMachine->can("a", "b"); // will return true or false
 ```
-note that **a** is the name of starting state, and **b** is the end of transition.
-If you add **validation** like mentioned above, just pass the requirements parameters to 
-state machine as an **array**. for example :
+
+if there are condition **closure** at defining time with, simply pass an array to `can`
+
 ```php
 $t2 = $stateMachine->can("a", "b", [
             "condition" => [
@@ -263,27 +331,11 @@ $t2 = $stateMachine->can("a", "b", [
 ```
 An array with index **condition** was passed to `can` function.
 
-###Access to State Machine
+### Access to State Machine
 Every state machine is containing a `Transition` instance when you are working with it.
 so access to transition properties like `condition closure` , `callback function`, `starting state`, `end state`
 ... is very useful at least in case of debugging.
-
-```php
-
-$transitionObject = $machine->getTransitionObject();
-
-$transition = $stateMachine->getMap()
-
-$t = ($transition["start_state_1"]["end_state_2"])->condition();
-$run = $t(false, true);
-
-$c = ($transition["start_state_1"]["end_state_2"])->callback();
-$run = $c(); // OR  $c($param1, $param2,...);
-
-...
-...
-
-```
+ 
 
 Run Tests
 ==========
