@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "94b9c044a62c8f3d00e50e8e0e7f0e68",
+    "content-hash": "10e508e8d0d7e1e6ea00636457ebe7c8",
     "packages": [],
     "packages-dev": [
         {
@@ -685,12 +685,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "6bef716234a519ee880b593179a52bb6ddd2cbd3"
+                "reference": "9394dc3eba44ffcd3fd44293e57e847ecbce3bd6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/6bef716234a519ee880b593179a52bb6ddd2cbd3",
-                "reference": "6bef716234a519ee880b593179a52bb6ddd2cbd3",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/9394dc3eba44ffcd3fd44293e57e847ecbce3bd6",
+                "reference": "9394dc3eba44ffcd3fd44293e57e847ecbce3bd6",
                 "shasum": ""
             },
             "require": {
@@ -761,7 +761,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-01-11T06:11:07+00:00"
+            "time": "2019-01-24T16:01:13+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -1332,12 +1332,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "5ea1be71259e2a9578647cdb8507406e9d50f406"
+                "reference": "8c94cf9231dc70e8cb45c52a8f3a34501e271da0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/5ea1be71259e2a9578647cdb8507406e9d50f406",
-                "reference": "5ea1be71259e2a9578647cdb8507406e9d50f406",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/8c94cf9231dc70e8cb45c52a8f3a34501e271da0",
+                "reference": "8c94cf9231dc70e8cb45c52a8f3a34501e271da0",
                 "shasum": ""
             },
             "require": {
@@ -1375,7 +1375,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2019-01-10T22:34:10+00:00"
+            "time": "2019-01-23T00:15:48+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",

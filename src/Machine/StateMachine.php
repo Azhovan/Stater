@@ -68,7 +68,7 @@ class StateMachine implements StateMachineInterface, Map, TransitionObject
      *
      * @param null|Transition $transitionObject
      */
-    public function __construct(?Transition $transitionObject)
+    public function __construct(?Transition $transitionObject = null)
     {
         $this->transitionObject = $transitionObject ?? new Transition();
     }
@@ -81,10 +81,7 @@ class StateMachine implements StateMachineInterface, Map, TransitionObject
     {
         return $this->move($initial, $next)->with($parameters);
 
-        // stateMachine::can(new Transition($data), [...data...]) ;
-        //if (!$this->object($next)->instanceOf(Transition::class)) {
-        //
-        //}
+        //TODO:  stateMachine::can(new Transition($data), [...data...])
     }
 
     /**

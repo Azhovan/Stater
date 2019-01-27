@@ -16,7 +16,7 @@ class StateMachineTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->stateMachine = new StateMachine(null);
+        $this->stateMachine = new StateMachine();
     }
 
     /**

@@ -1,5 +1,5 @@
 {
-  "name": "azhovan/Stater",
+  "name": "azhovan/stater",
   "description": "DFA state machine implementation",
   "type": "project",
   "require-dev": {
