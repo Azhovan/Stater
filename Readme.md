@@ -172,9 +172,9 @@ $event = [
 ```
 ### Initializing StateMachine
 To defining state machine, you need to define `state(s)` and `evenet(s)` and use 
-state machine functionality. Remember taht, creating any state machine needs 2 states at least
+state machine functionality. Remember that, creating any state machine needs 2 states at least
 
-creating also machine can be possible in two ways
+creating machine, can be possible in two ways
 1. step by step with state Machine object
 2. mass create by factory class
 
@@ -198,7 +198,7 @@ $stateMachine
             function () {
                 // code here
             }
-        );
+        )->get();
 
 ```
 
@@ -240,7 +240,7 @@ $machine = Stater\Machine\Factory::create([
             }
         ]
     ]
-);
+)->get();
 
 ```
 

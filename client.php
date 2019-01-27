@@ -16,4 +16,4 @@ $machine = Stater\Machine\Factory::create([
             }
         ]
     ]
-);
+)->get();
