@@ -91,22 +91,30 @@ class Transition
      */
     public function conditionWith(array $parameters)
     {
+        echo "dddd";
         $closure = $this->condition();
+
+        if (null == $closure)
+            return true;
 
         try {
 
-            if (empty($parameters))
+            if (empty($parameters)) {
                 return $closure();
-
-            return $closure(extract($parameters));
+            } else {
+                return call_user_func_array($closure, $parameters);
+            }
 
         } catch (\ArgumentCountError $invalid) {
-            return false;
+            echo $invalid->getMessage();
+            throw $invalid;
 
         } catch (\InvalidArgumentException $invalid) {
-            return false;
+            echo $invalid->getMessage();
+            throw $invalid;
 
         } catch (\Exception $exception) {
+            echo $exception->getMessage();
             throw $exception;
         }
     }
@@ -147,7 +155,6 @@ class Transition
 
         throw new InvalidArgumentException("more than one argument not supported");
     }
-
 
 
 }

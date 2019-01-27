@@ -566,7 +566,7 @@ class StateMachineTest extends TestCase
 
     public function test_check_go_to_next_state()
     {
-        $this->seed_state_machine();
+        $this->seed_state_machine_2();
 
         $t2 = $this->stateMachine->can("a", "b");
         $t3 = $this->stateMachine->can("b", "c");
@@ -577,21 +577,19 @@ class StateMachineTest extends TestCase
 
 
         $t1 = $this->stateMachine->can("a", "c");
-        $t2 = $this->stateMachine->can("c", "b");
         $t3 = $this->stateMachine->can("e", "c");
         $t4 = $this->stateMachine->can("c", "a");
         $t5 = $this->stateMachine->can("d", "e");
         $t6 = $this->stateMachine->can("e", "e");
-        $this->assertFalse($t1 and $t2 and $t3 and $t4 and $t5 and $t6);
+        $this->assertFalse($t1 and $t3 and $t4 and $t5 and $t6);
 
         $t1 = $this->stateMachine->can("a", "c");
-        $t2 = $this->stateMachine->can("c", "b");
-        $this->assertFalse($t1 and $t2 and $t3 and $t4 and $t5 and $t6);
+        $this->assertFalse($t1  and $t3 and $t4 and $t5 and $t6);
 
 
     }
 
-    private function seed_state_machine()
+    private function seed_state_machine_2()
     {
         $st1 = [
             "name" => "a",
@@ -658,13 +656,14 @@ class StateMachineTest extends TestCase
         $this->stateMachine
             ->state($states("a"))
             ->on($events("event_name"),
-                function ($input1, $input2) {
-                    return (!$input1 and $input2);
+                function () {
+                    return true;
                 })
             ->transitionTo($states("a"),
                 function () {
                     return 1;
                 })->get();
+
         // define a => b
         $this->stateMachine
             ->state($states("a"))
@@ -677,10 +676,7 @@ class StateMachineTest extends TestCase
         $this->stateMachine
             ->state($states("b"))
             ->on($events("event_name"))
-            ->transitionTo($states("c"),
-                function () {
-                    return 4;
-                })->get();
+            ->transitionTo($states("c"))->get();
 
         // define c => d
         $this->stateMachine
@@ -706,21 +702,80 @@ class StateMachineTest extends TestCase
                 function () {
                     return 4;
                 })->get();
+
+        // define e => e
+        $this->stateMachine
+            ->state($states("e"))
+            ->on($events("event_name"),
+                function ($input1, $input2) {
+                    return (!$input1 and $input2);
+                })
+            ->transitionTo($states("a"),
+                function () {
+                    return 4;
+                })->get();
+
+        // define e => e
+        $this->stateMachine
+            ->state($states("c"))
+            ->on($events("event_name"),
+                function ($input1) {
+                    return (!$input1);
+                })
+            ->transitionTo($states("b"),
+                function () {
+                    return 4;
+                })->get();
     }
 
-    /*public function test_check_state_machine_to_stop_on_false_condition()
+    public function test_check_state_machine_to_stop_on_false_condition()
     {
-        $this->seed_state_machine();
+        $this->seed_state_machine_2();
 
-        $t = $this->stateMachine->can("a", "a", [
+        // test with different data type :: integers
+        $t1 = $this->stateMachine->can("a", "a");
+        $this->assertTrue($t1);
+
+        /*
+         * Below code is the equal behaviour
+         *
+         * $transition = $this->stateMachine->getMap();
+         * $t = ($transition["a"]["a"])->condition();
+         * $run = $t(false, true);
+         */
+        // test 2
+        // change the conditions use Booleans
+        $t2 = $this->stateMachine->can("e", "a", [
             "condition" => [
-                "param1" => 1,
-                "param2" => 2
+                "param1" => false,
+                "param2" => true
             ]
         ]);
 
-        $this->assertTrue($t);
-    }*/
+        $this->assertTrue($t2);
+
+
+        // test 3
+        // one parameter
+        $t3 = $this->stateMachine->can("c", "b", [
+            "condition" => [
+                "param1" => true,
+            ]
+        ]);
+        $this->assertFalse($t3);
+
+        // test 4
+        // without any parameter
+        // $this->stateMachine->reset();
+        $t4 = $this->stateMachine->can("b", "c");
+        $this->assertTrue($t4);
+    }
+
+    /**------------------------------------------------------------
+     *
+     * State Machine Seeders
+     *
+     *-------------------------------------------------------------*/
 
 
 }
