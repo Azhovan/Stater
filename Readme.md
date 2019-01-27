@@ -30,7 +30,7 @@ Getting started
 
 ### Define States
 
-Defining a `state` in both is very easy step, you can use `state factory` class or directly by
+Defining a `state` is easy step, you can use `state factory` class or directly by
 using `State` class. A `state` in **Stater** can be just and simple primitive `string` or
 even a complex `aray`.
 
