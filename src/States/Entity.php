@@ -58,7 +58,10 @@ class Entity implements EntityInterface
     {
         if (is_array($this->data)) {
             $this->entityObject->name = $this->data["name"];
-            $this->entityObject->data = $this->data["data"];
+
+            if (isset($this->data["data"])) {
+                $this->entityObject->data = $this->data["data"];
+            }
         } else {
             $this->entityObject->name = $this->data;
         }

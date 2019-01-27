@@ -227,37 +227,18 @@ This option is useful when you need to create whole the state machine in one ste
 ```php
 
 // Create simple state machine with single entry
-$machine = Stater\Machine\Factory::create(
-    [
-        "state" => [
-            "name" => "state_1",
-            "data" => [
-                "user" => "test_user1",
-                "credit" => "250"
-            ]
-        ],
-        "event" => [
-            "name" => "event_name_1",
-            "data" => [
-                "user" => "jabar_asadi_1",
-                "email" => "asadi.jabar@outlook.com",
-                "credit" => "10000",
-                "availability" => "1-march",
-                "vip" => true
-            ]
-        ],
-        "condition" => function () {
-        },
-        "callback" => function () {
-        },
-        "transitionTo" => [
-            "name" => "state_1",
-            "data" => [
-                "user" => "test_user1",
-                "credit" => "250"
-            ]
+$machine = Stater\Machine\Factory::create([
+        [
+            "state" => ["name" => "state1", "data" => ""],
+            "event" => ["name" => "event1", "data" => ""],
+            "condition" => function () {
+                return true;
+            },
+            "transitionTo" => ["name" => "state2", "data" => ""],
+            "callback" => function () {
+                // code here
+            }
         ]
-
     ]
 );
 
