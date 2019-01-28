@@ -1,7 +1,7 @@
 Stater, An Advanced | Fast PHP State Machine Manager
 ====================================================
 
-Stater is an advanced State Machine, all written in PHP. It can holds states, standalone conditions, callbacks and events with complex data structure 
+Stater is an advanced State Machine, all written in PHP. It can hold states, standalone conditions, callbacks and events with a complex data structure 
 
 
 ### Concepts and terminology
@@ -28,13 +28,13 @@ Getting started
 }
 ```
 
-### Define States
+### Defining States
 
-Defining a `state` is easy step, you can use `state factory` class or directly by
+Defining a `state` is an easy step, you can use `state factory` class or directly by
 using `State` class. A `state` in **Stater** can be just and simple primitive `string` or
-even a complex `aray`.
+even a complex `array`.
 
-Define a state with complex data format:
+complex data format:
 ```php
 $state = [
             "name" => "state_name1",
@@ -49,7 +49,7 @@ $state = [
         
 ``` 
 
-Define simple `state`: 
+simple `state`: 
 ```php
 $state = ["state_name1"]
 ```
@@ -90,7 +90,7 @@ Every `state` has two fields:
 
 When you create simple states like `$st = ["state_name1"]` the `name` will be set automatically.
 in case of complex states, you need to declare `data` field to keep those data tracked.
-for example data block will hold the extra information about the state 
+for example, the data block will hold extra information about the state 
 
 ```php
 $state = [
@@ -104,8 +104,7 @@ $state = [
         ];
 ```
 
-The returned object by `factory` class or `Stater\States\State` class may be used to 
-access to state objects. 
+The returned object by `factory` class or `Stater\States\State` class may be used to access to state objects. 
 
 ```php
 $st = new Stater\States\State();
@@ -138,7 +137,7 @@ $allStates = $states();
 
 ...
 ``` 
-At the very higher level all states are inherited from `stdClass`.
+At the very higher level, all states are inherited from `stdClass`.
 ```php
 
 class State extends AbstractObject
@@ -164,13 +163,12 @@ class DomainObject extends stdClass
 So you have the idea!.
 
 
-### Define Events
-Events are actions which are needed to start a transition. suppose there is transition
-like `a -----> b`, to change the state from `a` to `b` some action should happened (like event, or action by user)
+### Defining Events
+Events are actions to starting a transition. Suppose a transition
+like `a -----> b`, to change the state from `a` to `b` some actions should happen (like an event, or action by the user)
 
-From modeling perspective, `Events` are like `States` in **Stater**. Both of them are `DomainObject`. They are objects 
-which created, initialized, refined, etc.What really make them different is how to use these concepts inside the state machine.
-So all the functionality for Events are exact like the State.
+From the modeling perspective, `Events` are like `States` in **Stater**. Both of them are `DomainObject`. They are objects which created, initialized, refined, etc. What really makes them different is how to use these concepts inside the state machine.
+So all the functionality for Events is exactly like the States.
  
 ```php
 $event = [
@@ -216,20 +214,21 @@ $allEvent = $events();
 
 ```
 ### Initializing StateMachine
-There are few steps:
-- Create event(s)
-  - there is no two event with same name
-  - define one event per transition 
+
+There are a few steps to do:
+- Create an event(s)
+  - Every event **SHOULD** has unique name (it is not possible to have two different events with the same name)
+  - Define **one event, per transition 
 - Create State(s)
-  - there is no two state with same name
+  - Every state **SHOULD** has unique name (it is not possible to have two different states with the same name)
   - define 2 states per transition (**start** of the transition, **end** of the transition)
-- Attach Them to State Machine
+- Attach **events** and **states** to State Machine
 
-Two way to create state machine object
-1. By State Machine class
-2. By factory class
+There are two ways to create state machine object
+1. By `Stater\Machine\StateMachine` class
+2. By `Stater\Machine\Factory` class
 
-lets explore all
+let's explore all
 
 #### Creating state machine step by step
 
@@ -253,30 +252,26 @@ $stateMachine
 
 ```
 
-##### state(...) function 
+##### state(State $state) function 
 
 Set the starting point of transition.
 
-##### on(...) function
+##### on(Event $event, Closure $condition) function
 
 Set the event of transition with conditions.
-It will receive an event, and `callback` function.
-the `callback` function is optional and it is responsible for **validation**.
-it is an **GUARD** to protect the transition based on your definition.The callback function
-is a `Closure`, so you can pass any parameter to it or use any variables in it's scope.
-when a transition happened, caller routine needs to pass required parameters (if defined in its definition)
-to state machine.
+The `closure` is optional. It is responsible for **validation**. you can pass any things inside of that, when 
+you want to validate a transition by state machine object.
 
-##### transitionTo(...)  function 
 
-Set the end point of transition.
-It will receive a state as end of transition plus `Closure` as callback after transition 
-finished. use it to log, hit external endpoint,... after transition completed.
+##### transitionTo(State $state, Closure $callback)  function 
 
-examples :`tests/Unit/StateMachineTest.php`.
+Set the end of transition.
+`$callback` is a callback function that will run after transition competition.
+
+more examples :`tests/Unit/StateMachineTest` class.
 
 ##### get() function
-Return the state machine mapp. this is associated array, which every cell contains `Transition` objects. 
+Return the state machine map. It is an associated array contains `Transition` objects. 
 
 ```php
 
@@ -287,7 +282,7 @@ var_dump($map["state1_name"]["state2_name"] );
 
 ```
 
-#### Creating state machine by factory class 
+#### Creating a state machine by the factory class 
 This option is useful when you need to create whole the state machine in one step (load the data from config files, database, ...)
 
 ```php
@@ -311,15 +306,15 @@ $machine = Stater\Machine\Factory::create([
 ```
 
 #### Validation
-Validation is very simple, just like below:
+Validation is like below:
 
 ```php
 // is it possible to go from state "a" to state "b"
-// there is no condition here, means there is protection. just feasibility will checked
+// there is no condition here, means there is **NOT** protection. just feasibility will checked
 $stateMachine->can("a", "b"); // will return true or false
 ```
 
-if there are condition **closure** at defining time with, simply pass an array to `can`
+if there are conditions , simply pass an array to `can` function
 
 ```php
 $t2 = $stateMachine->can("a", "b", [
@@ -329,12 +324,12 @@ $t2 = $stateMachine->can("a", "b", [
             ]
         ]);
 ```
-An array with index **condition** was passed to `can` function.
+index **condition** required here.
 
 ### Access to State Machine
-Every state machine is containing a `Transition` instance when you are working with it.
-so access to transition properties like `condition closure` , `callback function`, `starting state`, `end state`
-... is very useful at least in case of debugging.
+
+State machine contains a `Transition` instance.
+Access to transition properties like `condition` closure , `callback` closure, `starting state`, `end state`, etc looks useful.
  
 
 Run Tests
