@@ -1,5 +1,5 @@
 
-https://travis-ci.org/Azhovan/Stater.svg?branch=master
+[![Build Status](https://travis-ci.org/Azhovan/Stater.svg?branch=master)](https://travis-ci.org/Azhovan/Stater)
 
 Stater, An Advanced | Fast PHP State Machine Manager
 ====================================================
