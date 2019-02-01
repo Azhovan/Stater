@@ -1,3 +1,6 @@
+
+https://travis-ci.org/Azhovan/Stater.svg?branch=master
+
 Stater, An Advanced | Fast PHP State Machine Manager
 ====================================================
 
