@@ -337,7 +337,7 @@ Access to transition properties like `condition` closure , `callback` closure, `
 
 Run Tests
 ==========
-run tests with `vendor/bin/phpunit tests/` command, at the root of the project.
+run tests with `composer tests` command, at the root of the project.
 
 
 Road Map
