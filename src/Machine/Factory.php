@@ -11,11 +11,11 @@ class Factory
      *
      * $machine::create([
      *   [
-     *       "state" => ["name" =>"state1", "model" => []],
-     *       "event" => ["name" =>"event1", "model" => []],
+     *       "state" => ["name" =>"state1", "data" => []],
+     *       "event" => ["name" =>"event1", "data" => []],
      *       "condition" => closure(),
      *       "callback" => closure(),
-     *       "transitionTo" => ["name" =>"state2", "model" => []]
+     *       "transitionTo" => ["name" =>"state2", "data" => []]
      *   ]
      *
      * ]);
