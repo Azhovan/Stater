@@ -143,5 +143,40 @@ class StateTest extends TestCase
         $this->assertSame($stateObject2["name"], $state()["state_name2"]->name);
     }
 
+	/**
+	 * Duplicated means same name with different indexes
+	 */
+    public function test_add_duplicate_states()
+    {
+	    $stateObject1 = [
+		    "name" => "state_name1",
+		    "data" => [
+			    "user" => "test_user1",
+			    "credit" => "250"
+		    ]
+	    ]
+	    ;
+
+	    $stateObject2 = [
+		    "name" => "state_name1",
+		    "data" => [
+			    "user" => "test_user2",
+			    "credit" => "100"
+		    ]
+	    ];
+
+	    /**
+	     * @var State $state
+	     */
+	    $state = $this->stateObject->create(
+		    [
+			    $stateObject1,
+			    $stateObject2,
+		    ]
+	    );
+
+	    $this->assertEquals(1, count($state));
+    }
+
 
 }
