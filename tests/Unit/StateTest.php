@@ -114,14 +114,13 @@ class StateTest extends TestCase
     public function test_create_state_with_array_input_and_complex_data()
     {
         $stateObject1 = [
-            [
                 "name" => "state_name1",
                 "data" => [
                     "user" => "test_user1",
                     "credit" => "250"
                 ]
             ]
-        ];
+        ;
 
         $stateObject2 = [
             "name" => "state_name2",
