@@ -11,7 +11,7 @@ trait InstanceFinder
     private $object;
 
     /**
-     * @param $object
+     * @param  $object
      * @return $this
      */
     public function object($object)
@@ -22,7 +22,7 @@ trait InstanceFinder
     }
 
     /**
-     * @param string $class
+     * @param  string $class
      * @return bool
      */
     public function instanceOf(string $class)

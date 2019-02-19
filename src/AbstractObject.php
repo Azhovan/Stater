@@ -41,12 +41,14 @@ abstract class AbstractObject extends AbstractDomainObject implements Accessor, 
             $args = func_get_args();
 
             // call like $state()["state1"]
-            if (empty($args))
+            if (empty($args)) {
                 return $this->getObjects();
+            }
 
             // call like $state("state1"):
-            elseif (1 == count($args))
+            elseif (1 == count($args)) {
                 return ($this->getObjects())[$args[0]];
+            }
 
             // call like $event("event1", "event2");
             else {

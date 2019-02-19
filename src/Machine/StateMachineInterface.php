@@ -14,9 +14,9 @@ interface StateMachineInterface extends IteratorAggregate, Countable
     /**
      * Check the feasibility of given transition on current state
      *
-     * @param $initial
-     * @param $next
-     * @param array $parameters
+     * @param  $initial
+     * @param  $next
+     * @param  array   $parameters
      * @return bool
      */
     public function can($initial, $next, array $parameters = []): bool;
@@ -24,7 +24,7 @@ interface StateMachineInterface extends IteratorAggregate, Countable
     /**
      * Initialize the starting state
      *
-     * @param DomainObject $init
+     * @param  DomainObject $init
      * @return StateMachineInterface
      */
     public function init(DomainObject $init): self;
@@ -32,7 +32,7 @@ interface StateMachineInterface extends IteratorAggregate, Countable
     /**
      * Initialize the destination state
      *
-     * @param DomainObject $end
+     * @param  DomainObject $end
      * @return StateMachineInterface
      */
     public function end(DomainObject $end): self;
@@ -40,7 +40,7 @@ interface StateMachineInterface extends IteratorAggregate, Countable
     /**
      * Create State and attached it to State Machine
      *
-     * @param DomainObject $start
+     * @param  DomainObject $start
      * @return StateMachineInterface
      */
     public function state(DomainObject $start): self;
@@ -48,8 +48,8 @@ interface StateMachineInterface extends IteratorAggregate, Countable
     /**
      * Define Transition
      *
-     * @param DomainObject $event
-     * @param  Closure $condition
+     * @param  DomainObject $event
+     * @param  Closure      $condition
      * @return StateMachineInterface
      */
     public function on(DomainObject $event, Closure $condition = null): self;
@@ -58,7 +58,7 @@ interface StateMachineInterface extends IteratorAggregate, Countable
      * Add next state to custom state
      *
      * @param  DomainObject $destination
-     * @param  Closure $callback do some thing after the transition
+     * @param  Closure      $callback    do some thing after the transition
      * @return self
      */
     public function transitionTo(DomainObject $destination, Closure $callback): self;
@@ -66,7 +66,7 @@ interface StateMachineInterface extends IteratorAggregate, Countable
     /**
      * Add new transition to current state machine
      *
-     * @param null|Transition $transition
+     * @param  null|Transition $transition
      * @return StateMachineInterface
      */
     public function addTransition(?Transition $transition = null): self;

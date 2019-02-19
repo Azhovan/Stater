@@ -7,8 +7,8 @@ trait DecorateData
     /**
      * Decorate data with given criteria
      *
-     * @param array $original
-     * @param array $properties
+     * @param  array $original
+     * @param  array $properties
      * @return array
      */
     private function decorate(array $original, array $properties)
@@ -23,7 +23,7 @@ trait DecorateData
     /**
      * Create data type with given type
      *
-     * @param string $type
+     * @param  string $type
      * @return \Closure|array
      */
     private function make(string $type)

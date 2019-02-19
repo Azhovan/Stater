@@ -52,15 +52,19 @@ class StateMachineTest extends TestCase
 
 
         $states = (new \Stater\States\Factory())
-            ->create([
+            ->create(
+                [
                 $startState,
                 $endState
-            ]);
+                ]
+            );
 
         $events = (new \Stater\Events\Factory())
-            ->create([
+            ->create(
+                [
                 $event
-            ]);
+                ]
+            );
 
         // attach the state to state machine
         $this->stateMachine
@@ -84,17 +88,17 @@ class StateMachineTest extends TestCase
 
         // give start state details
         // print_r(($map["state_name1"]["state_name2"])->start());
-//        .Stater\DomainObject Object
-//        (
-//           [type] => state
-//           [name] => state_name1
-//           [data] => Array
-//             (
-//              [user] => test_user1
-//              [credit] => 250
-//             )
-//
-//          )
+        //        .Stater\DomainObject Object
+        //        (
+        //           [type] => state
+        //           [name] => state_name1
+        //           [data] => Array
+        //             (
+        //              [user] => test_user1
+        //              [credit] => 250
+        //             )
+        //
+        //          )
 
         //hash map contains of transition objects
         $this->assertInstanceOf(Transition::class, $map["state_name1"]["state_name2"]);
@@ -114,9 +118,11 @@ class StateMachineTest extends TestCase
         ];
 
         $states = (new \Stater\States\Factory())
-            ->create([
+            ->create(
+                [
                 $startState,
-            ]);
+                ]
+            );
 
         // define staring point
         $machine = $this->stateMachine
@@ -152,14 +158,18 @@ class StateMachineTest extends TestCase
         ];
 
         $events = (new \Stater\Events\Factory())
-            ->create([
+            ->create(
+                [
                 $event
-            ]);
+                ]
+            );
 
         $states = (new \Stater\States\Factory())
-            ->create([
+            ->create(
+                [
                 $startState,
-            ]);
+                ]
+            );
 
         // define staring point
         $machine = $this->stateMachine
@@ -198,25 +208,32 @@ class StateMachineTest extends TestCase
         ];
 
         $events = (new \Stater\Events\Factory())
-            ->create([
+            ->create(
+                [
                 $event
-            ]);
+                ]
+            );
 
         $states = (new \Stater\States\Factory())
-            ->create([
+            ->create(
+                [
                 $startState,
-            ]);
+                ]
+            );
 
         // define staring point
         $machine = $this->stateMachine
             ->state($states()["state_name1"])
-            ->on($events()["event_name"],
+            ->on(
+                $events()["event_name"],
                 function ($input) {
-                    if ($input < 2)
+                    if ($input < 2) {
                         return true;
+                    }
 
                     return false;
-                });
+                }
+            );
 
         $transitionObject = $machine->getTransitionObject();
 
@@ -243,10 +260,12 @@ class StateMachineTest extends TestCase
         ];
 
         $states = (new \Stater\States\Factory())
-            ->create([
+            ->create(
+                [
                 $startState,
                 $endState
-            ]);
+                ]
+            );
 
         $event = [
             "name" => "event_name",
@@ -260,9 +279,11 @@ class StateMachineTest extends TestCase
         ];
 
         $events = (new \Stater\Events\Factory())
-            ->create([
+            ->create(
+                [
                 $event
-            ]);
+                ]
+            );
 
         // define staring point
         $machine = $this->stateMachine
@@ -293,10 +314,12 @@ class StateMachineTest extends TestCase
         ];
 
         $states = (new \Stater\States\Factory())
-            ->create([
+            ->create(
+                [
                 $startState,
                 $endState
-            ]);
+                ]
+            );
 
         $event = [
             "name" => "event_name",
@@ -310,21 +333,26 @@ class StateMachineTest extends TestCase
         ];
 
         $events = (new \Stater\Events\Factory())
-            ->create([
+            ->create(
+                [
                 $event
-            ]);
+                ]
+            );
 
         // define staring point
         $machine = $this->stateMachine
             ->state($states()["start"])
             ->on($events()["event_name"])
-            ->transitionTo($states()["end"],
+            ->transitionTo(
+                $states()["end"],
                 function ($input) {
-                    if ($input > 2)
+                    if ($input > 2) {
                         return true;
+                    }
 
                     return false;
-                });
+                }
+            );
 
         $transitionObject = $machine->getTransitionObject();
 
@@ -361,10 +389,12 @@ class StateMachineTest extends TestCase
         ];
 
         $states = (new \Stater\States\Factory())
-            ->create([
+            ->create(
+                [
                 $startState,
                 $endState
-            ]);
+                ]
+            );
 
         $event = [
             "name" => "event_name",
@@ -378,20 +408,25 @@ class StateMachineTest extends TestCase
         ];
 
         $events = (new \Stater\Events\Factory())
-            ->create([
+            ->create(
+                [
                 $event
-            ]);
+                ]
+            );
 
         $machine = $this->stateMachine
             ->state($states()["start"])
             ->on($events()["event_name"])
-            ->transitionTo($states()["end"],
+            ->transitionTo(
+                $states()["end"],
                 function ($input) {
-                    if ($input > 2)
+                    if ($input > 2) {
                         return true;
+                    }
 
                     return false;
-                });
+                }
+            );
 
         $this->assertIsArray($machine->get());
 
@@ -417,10 +452,12 @@ class StateMachineTest extends TestCase
         ];
 
         $states = (new \Stater\States\Factory())
-            ->create([
+            ->create(
+                [
                 $startState,
                 $endState
-            ]);
+                ]
+            );
 
         $event = [
             "name" => "event_name",
@@ -434,49 +471,61 @@ class StateMachineTest extends TestCase
         ];
 
         $events = (new \Stater\Events\Factory())
-            ->create([
+            ->create(
+                [
                 $event
-            ]);
+                ]
+            );
 
         // define b => a
         $this->stateMachine
             ->state($states()["b"])
             ->on($events()["event_name"])
-            ->transitionTo($states()["a"],
+            ->transitionTo(
+                $states()["a"],
                 function ($input) {
                     return 4;
-                })->get();
+                }
+            )->get();
 
         // define  a => b
         $this->stateMachine
             ->state($states()["a"])
             ->on($events()["event_name"])
-            ->transitionTo($states()["b"],
+            ->transitionTo(
+                $states()["b"],
                 function () {
                     return 8;
-                })->get();
+                }
+            )->get();
 
 
         // define b => b
         $this->stateMachine
             ->state($states()["b"])
-            ->on($events()["event_name"],
+            ->on(
+                $events()["event_name"],
                 function ($input) {
                     return $input;
-                })
-            ->transitionTo($states()["b"],
+                }
+            )
+            ->transitionTo(
+                $states()["b"],
                 function ($input) {
                     return 3;
-                })->get();
+                }
+            )->get();
 
         // define a => a
         $this->stateMachine
             ->state($states()["a"])
             ->on($events()["event_name"])
-            ->transitionTo($states()["a"],
+            ->transitionTo(
+                $states()["a"],
                 function () {
                     return 2;
-                })->get();
+                }
+            )->get();
 
         $map = $this->stateMachine->get();
         $this->assertEquals(6, count($this->stateMachine));
@@ -489,10 +538,12 @@ class StateMachineTest extends TestCase
         $this->stateMachine
             ->state($states()["a"])
             ->on($events()["event_name"])
-            ->transitionTo($states()["a"],
+            ->transitionTo(
+                $states()["a"],
                 function ($iput) {
                     return 2;
-                })->get();
+                }
+            )->get();
 
         $this->assertEquals(2, count($this->stateMachine));
     }
@@ -515,10 +566,12 @@ class StateMachineTest extends TestCase
         ];
 
         $states = (new \Stater\States\Factory())
-            ->create([
+            ->create(
+                [
                 $state1,
                 $state2
-            ]);
+                ]
+            );
 
         $event1 = [
             "name" => "event_name_1",
@@ -543,10 +596,12 @@ class StateMachineTest extends TestCase
         ];
 
         $events = (new \Stater\Events\Factory())
-            ->create([
+            ->create(
+                [
                 $event1,
                 $event2,
-            ]);
+                ]
+            );
 
 
         $this->assertEquals($events()["event_name_1"], $events("event_name_1"));
@@ -628,13 +683,15 @@ class StateMachineTest extends TestCase
         ];
 
         $states = (new \Stater\States\Factory())
-            ->create([
+            ->create(
+                [
                 $st1,
                 $st2,
                 $st3,
                 $st4,
                 $st5,
-            ]);
+                ]
+            );
 
         $event = [
             "name" => "event_name",
@@ -648,30 +705,38 @@ class StateMachineTest extends TestCase
         ];
 
         $events = (new \Stater\Events\Factory())
-            ->create([
+            ->create(
+                [
                 $event
-            ]);
+                ]
+            );
 
         // define a => a
         $this->stateMachine
             ->state($states("a"))
-            ->on($events("event_name"),
+            ->on(
+                $events("event_name"),
                 function () {
                     return true;
-                })
-            ->transitionTo($states("a"),
+                }
+            )
+            ->transitionTo(
+                $states("a"),
                 function () {
                     return 1;
-                })->get();
+                }
+            )->get();
 
         // define a => b
         $this->stateMachine
             ->state($states("a"))
             ->on($events("event_name"))
-            ->transitionTo($states("b"),
+            ->transitionTo(
+                $states("b"),
                 function () {
                     return 4;
-                })->get();
+                }
+            )->get();
         // define b => c
         $this->stateMachine
             ->state($states("b"))
@@ -682,50 +747,64 @@ class StateMachineTest extends TestCase
         $this->stateMachine
             ->state($states("c"))
             ->on($events("event_name"))
-            ->transitionTo($states("d"),
+            ->transitionTo(
+                $states("d"),
                 function () {
                     return 4;
-                })->get();
+                }
+            )->get();
         // define d => e
         $this->stateMachine
             ->state($states("d"))
             ->on($events("event_name"))
-            ->transitionTo($states("e"),
+            ->transitionTo(
+                $states("e"),
                 function () {
                     return 4;
-                })->get();
+                }
+            )->get();
         // define e => e
         $this->stateMachine
             ->state($states("e"))
             ->on($events("event_name"))
-            ->transitionTo($states("e"),
+            ->transitionTo(
+                $states("e"),
                 function () {
                     return 4;
-                })->get();
+                }
+            )->get();
 
         // define e => e
         $this->stateMachine
             ->state($states("e"))
-            ->on($events("event_name"),
+            ->on(
+                $events("event_name"),
                 function ($input1, $input2) {
                     return (!$input1 and $input2);
-                })
-            ->transitionTo($states("a"),
+                }
+            )
+            ->transitionTo(
+                $states("a"),
                 function () {
                     return 4;
-                })->get();
+                }
+            )->get();
 
         // define e => e
         $this->stateMachine
             ->state($states("c"))
-            ->on($events("event_name"),
+            ->on(
+                $events("event_name"),
                 function ($input1) {
                     return (!$input1);
-                })
-            ->transitionTo($states("b"),
+                }
+            )
+            ->transitionTo(
+                $states("b"),
                 function () {
                     return 4;
-                })->get();
+                }
+            )->get();
     }
 
     public function test_check_state_machine_to_stop_on_false_condition()
@@ -745,23 +824,27 @@ class StateMachineTest extends TestCase
          */
         // test 2
         // change the conditions use Booleans
-        $t2 = $this->stateMachine->can("e", "a", [
+        $t2 = $this->stateMachine->can(
+            "e", "a", [
             "condition" => [
                 "param1" => false,
                 "param2" => true
             ]
-        ]);
+            ]
+        );
 
         $this->assertTrue($t2);
 
 
         // test 3
         // one parameter
-        $t3 = $this->stateMachine->can("c", "b", [
+        $t3 = $this->stateMachine->can(
+            "c", "b", [
             "condition" => [
                 "param1" => true,
             ]
-        ]);
+            ]
+        );
         $this->assertFalse($t3);
 
         // test 4
@@ -771,11 +854,13 @@ class StateMachineTest extends TestCase
         $this->assertTrue($t4);
     }
 
-    /**------------------------------------------------------------
+    /**
+* ------------------------------------------------------------
      *
      * State Machine Seeders
      *
-     *-------------------------------------------------------------*/
+     *-------------------------------------------------------------
+*/
 
 
 }

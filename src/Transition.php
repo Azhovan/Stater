@@ -85,7 +85,7 @@ class Transition
     /**
      * Run condition with parameters
      *
-     * @param array $parameters
+     * @param  array $parameters
      * @return mixed
      * @throws \Exception|\InvalidArgumentException
      * @throws \ArgumentCountError
@@ -94,8 +94,9 @@ class Transition
     {
         $closure = $this->condition();
 
-        if (null == $closure)
+        if (null == $closure) {
             return true;
+        }
 
         try {
 

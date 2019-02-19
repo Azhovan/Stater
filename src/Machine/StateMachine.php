@@ -12,8 +12,8 @@ use Stater\Traits\{
 };
 
 /**
- *
  * Class StateMachine
+ *
  * @package Stater\Machine
  */
 class StateMachine implements StateMachineInterface, Map, TransitionObject
@@ -87,7 +87,7 @@ class StateMachine implements StateMachineInterface, Map, TransitionObject
     /**
      * Use parameters to change the state of state machine
      *
-     * @param array $parameters
+     * @param  array $parameters
      * @return bool
      */
     public function with(array $parameters = [])
@@ -96,9 +96,11 @@ class StateMachine implements StateMachineInterface, Map, TransitionObject
             return false;
         }
 
-        $decorated = $this->decorate($parameters, [
+        $decorated = $this->decorate(
+            $parameters, [
             "condition" => "array",
-        ]);
+            ]
+        );
 
         // the better call is $this->transition->condition()->with(...)
         if (!$this->transition->conditionWith($decorated['condition'])) {
@@ -111,7 +113,7 @@ class StateMachine implements StateMachineInterface, Map, TransitionObject
     /**
      * Apply changes to state machine
      *
-     * @param $callback
+     * @param  $callback
      * @return mixed
      */
     private function apply($callback)
@@ -127,8 +129,8 @@ class StateMachine implements StateMachineInterface, Map, TransitionObject
     /**
      * Could to go to next state
      *
-     * @param $initial
-     * @param string $next
+     * @param  $initial
+     * @param  string  $next
      * @return StateMachine
      */
     private function move($initial, string $next)

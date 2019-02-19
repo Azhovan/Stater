@@ -34,15 +34,19 @@ class Factory
         foreach ($entries as $entry) {
 
             $states = (new \Stater\States\Factory())
-                ->create([
+                ->create(
+                    [
                     $entry["state"],
                     $entry["transitionTo"]
-                ]);
+                    ]
+                );
 
             $event = (new \Stater\Events\Factory())
-                ->create([
+                ->create(
+                    [
                     $entry["event"]
-                ]);
+                    ]
+                );
 
             $machine
                 ->state(

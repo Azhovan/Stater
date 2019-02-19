@@ -34,40 +34,42 @@ class State extends AbstractObject
      * @param  array $states
      * @return void
      */
-	protected function init (array $states): void
-	{
-		foreach ($states as $state) {
+    protected function init(array $states): void
+    {
+        foreach ($states as $state) {
 
-			if ($this->exists($state))
-				continue;
+            if ($this->exists($state)) {
+                continue;
+            }
 
-			if (is_array($state)) {
-				$this->states[$state["name"]] = $this->stateObject(new Entity($state));
+            if (is_array($state)) {
+                $this->states[$state["name"]] = $this->stateObject(new Entity($state));
 
-			} else {
-				$this->states[$state] = $this->stateObject(new Entity($state));
-			}
-		}
-	}
+            } else {
+                $this->states[$state] = $this->stateObject(new Entity($state));
+            }
+        }
+    }
 
-	/**
-	 * Check whether the state exists or not
-	 *
-	 * @param $key
-	 *
-	 * @return bool
-	 */
+    /**
+     * Check whether the state exists or not
+     *
+     * @param $key
+     *
+     * @return bool
+     */
     private function exists($key)
     {
-	    if (is_array($key)) {
-		    if (isset($this->states[$key["name"]]))
-			    return true;
+        if (is_array($key)) {
+            if (isset($this->states[$key["name"]])) {
+                return true;
+            }
 
-	    } else if (isset($this->states[$key])) {
-	    	return true;
-	    }
+        } else if (isset($this->states[$key])) {
+            return true;
+        }
 
-	    return false;
+        return false;
     }
 
 
