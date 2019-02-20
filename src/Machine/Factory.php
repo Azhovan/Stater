@@ -141,18 +141,21 @@ class Factory
 		foreach ($entry as $item) {
 			if (is_string($item)) {
 				if (array_key_exists($item, $this->events)) {
+                    $events[] = $this->events[$item];
 					continue;
 				} else {
 					$events[] = $item;
+                    $this->events[$item] = $item;
 				}
 			}
 
 			if (is_array($item)) {
 				if (array_key_exists($item['name'], $this->events)) {
+                    $events[] = $this->events[$item['name']];
 					continue;
 				} else {
 					$events[] = $item;
-					$this->events['name'] = $item;
+                    $this->events[$item['name']] = $item;
 				}
 			}
 		}
