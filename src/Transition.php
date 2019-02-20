@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stater;
 
 use Closure;
+use InvalidArgumentException;
 use RuntimeException;
 
 class Transition
@@ -134,7 +135,7 @@ class Transition
             return $this;
         }
 
-        return $this->condition;
+        return $this->condition ?? null;
     }
 
     /**
