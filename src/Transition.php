@@ -80,7 +80,7 @@ class Transition
             return $this;
         }
 
-        return $this->callback;
+        return $this->callback ?? null;
     }
 
     /**
