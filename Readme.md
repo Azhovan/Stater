@@ -24,11 +24,8 @@ Getting started
 ---------------
 ### Installation (via composer)
 ```js
-{
-      "require": {
-        "azhovan/stater": "^0.12"
-    }
-}
+ composer require azhovan/stater
+
 ```
 
 ### Defining States
