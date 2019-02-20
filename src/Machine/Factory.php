@@ -33,7 +33,7 @@ class Factory
 	 *
 	 * @param StateMachine $machine
 	 */
-	public function __construct (StateMachine $machine)
+	public function __construct ()
 	{
 		$this->machine = $machine ?? new StateMachine(null);
 	}
@@ -43,9 +43,9 @@ class Factory
 	 *
 	 * @param  array $entries
 	 *
-	 * @return mixed
+	 * @return StateMachine
 	 */
-	public function create (?array $entries)
+	public function create (?array $entries): StateMachine
 	{
 
 		if (null === $entries || empty($entries)) {
@@ -60,25 +60,38 @@ class Factory
 			$this->make($entry, $states, $event);
 		}
 
+		return $this->machine;
+
 	}
 
+	/**
+	 * Make state machine object
+	 *
+	 * @param $entry
+	 * @param $states
+	 * @param $event
+	 */
 	private function make ($entry, $states, $event)
 	{
+		$states = $states->getObjects();
+
 		$this->machine
 			->state(
-				$states($entry["state"]["name"])
+				current($states)
 			)
 			->on(
-				$event($entry["event"]["name"]),
+				$event,
 				$entry["condition"]
 			)
 			->transitionTo(
-				$states($entry["transitionTo"]["name"]),
+				next($states),
 				$entry["callback"]
 			);
 	}
 
 	/**
+	 * Create states
+	 *
 	 * @param $entry
 	 *
 	 * @return mixed
@@ -90,18 +103,23 @@ class Factory
 		foreach ($entry as $item) {
 			if (is_string($item)) {
 				if (array_key_exists($item, $this->states)) {
+					$states[] = $this->states[$item];
 					continue;
+
 				} else {
 					$states[] = $item;
+					$this->states[$item] = $item;
 				}
 			}
 
 			if (is_array($item)) {
 				if (array_key_exists($item['name'], $this->states)) {
+					$states[] = $this->states[$item['name']];
 					continue;
+
 				} else {
 					$states[] = $item;
-					$this->states['name'] = $item;
+					$this->states[$item['name']] = $item;
 				}
 			}
 		}
@@ -110,6 +128,8 @@ class Factory
 	}
 
 	/**
+	 * Create events
+	 *
 	 * @param $entry
 	 *
 	 * @return mixed
@@ -120,7 +140,7 @@ class Factory
 
 		foreach ($entry as $item) {
 			if (is_string($item)) {
-				if (array_key_exists($item, $this->$events)) {
+				if (array_key_exists($item, $this->events)) {
 					continue;
 				} else {
 					$events[] = $item;
@@ -128,7 +148,7 @@ class Factory
 			}
 
 			if (is_array($item)) {
-				if (array_key_exists($item['name'], $this->$events)) {
+				if (array_key_exists($item['name'], $this->events)) {
 					continue;
 				} else {
 					$events[] = $item;
