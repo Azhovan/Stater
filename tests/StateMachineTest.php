@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit;
+namespace Tests;
 
 use PHPUnit\Framework\TestCase;
 use Stater\Machine\Factory as MachineFactory;
@@ -172,7 +172,7 @@ class StateMachineTest extends TestCase
 				]
 			);
 
-		// define staring point
+		// define staring point, events
 		$machine = $this->stateMachine
 			->state($states()["state_name1"])
 			->on($events()["event_name"]);
@@ -251,7 +251,7 @@ class StateMachineTest extends TestCase
 				"user" => "test_user1",
 				"credit" => "250"
 			]
-		];;
+		];
 		$endState = [
 			"name" => "end",
 			"data" => [
@@ -286,7 +286,7 @@ class StateMachineTest extends TestCase
 				]
 			);
 
-		// define staring point
+		// define transition point
 		$machine = $this->stateMachine
 			->state($states()["start"])
 			->on($events()["event_name"])

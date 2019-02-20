@@ -26,7 +26,7 @@ Getting started
 ```js
 {
       "require": {
-        "azhovan/stater": "^0.1"
+        "azhovan/stater": "^0.12"
     }
 }
 ```
@@ -333,6 +333,10 @@ index **condition** required here.
 
 State machine contains a `Transition` instance.
 Access to transition properties like `condition` closure , `callback` closure, `starting state`, `end state`, etc looks useful.
+ 
+#### Examples
+For more examples, please refer to `tests` folder
+ 
  
 
 Run Tests
