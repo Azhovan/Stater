@@ -51,27 +51,6 @@ class State extends AbstractObject
         }
     }
 
-    /**
-     * Check whether the state exists or not
-     *
-     * @param $key
-     *
-     * @return bool
-     */
-    private function exists($key)
-    {
-        if (is_array($key)) {
-            if (isset($this->states[$key["name"]])) {
-                return true;
-            }
-
-        } else if (isset($this->states[$key])) {
-            return true;
-        }
-
-        return false;
-    }
-
 
     /**
      * @inheritdoc

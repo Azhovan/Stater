@@ -64,7 +64,6 @@ abstract class AbstractObject extends AbstractDomainObject implements Accessor, 
             throw $exception;
         }
 
-
     }
 
     /**
@@ -73,6 +72,27 @@ abstract class AbstractObject extends AbstractDomainObject implements Accessor, 
     public function count()
     {
         return count($this->getObjects());
+    }
+
+    /**
+     * Check whether the object exists or not
+     *
+     * @param $key
+     *
+     * @return bool
+     */
+    protected function exists($key)
+    {
+        if (is_array($key)) {
+            if (isset($this->getObjects()[$key["name"]])) {
+                return true;
+            }
+
+        } else if (isset($this->getObjects()[$key])) {
+            return true;
+        }
+
+        return false;
     }
 
 

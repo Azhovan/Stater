@@ -37,6 +37,11 @@ class Event extends AbstractObject
     protected function init(array $events): void
     {
         foreach ($events as $event) {
+
+            if ($this->exists($event)) {
+                continue;
+            }
+
             if (is_array($event)) {
                 $this->events[$event["name"]] = $this->stateObject(new Entity($event));
 
