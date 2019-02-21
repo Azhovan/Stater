@@ -69,7 +69,7 @@ abstract class AbstractObject extends AbstractDomainObject implements Accessor, 
     /**
      * @inheritdoc
      */
-    public function count()
+    public function count(): int
     {
         return count($this->getObjects());
     }
@@ -81,7 +81,7 @@ abstract class AbstractObject extends AbstractDomainObject implements Accessor, 
      *
      * @return bool
      */
-    protected function exists($key)
+    protected function exists($key): bool
     {
         if (is_array($key)) {
             if (isset($this->getObjects()[$key["name"]])) {

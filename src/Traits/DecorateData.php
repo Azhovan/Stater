@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stater\Traits;
 
 trait DecorateData
@@ -11,7 +13,7 @@ trait DecorateData
      * @param  array $properties
      * @return array
      */
-    private function decorate(array $original, array $properties)
+    private function decorate(array $original, array $properties): array
     {
         foreach ($properties as $property => $type) {
             $original[$property] = $original[$property] ?? $this->make($type);

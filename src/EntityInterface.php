@@ -16,5 +16,5 @@ interface EntityInterface
      *
      * @return mixed
      */
-    public function getType();
+    public function getType(): string ;
 }

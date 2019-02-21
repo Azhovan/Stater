@@ -17,6 +17,6 @@ interface Accessor
      *
      * @return mixed
      */
-    public function getObjects();
+    public function getObjects(): array ;
 
 }

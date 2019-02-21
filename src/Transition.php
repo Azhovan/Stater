@@ -36,7 +36,7 @@ class Transition
     /**
      * @return Transition
      */
-    public function make()
+    public function make(): Transition
     {
         return new self();
     }

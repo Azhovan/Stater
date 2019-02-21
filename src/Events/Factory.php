@@ -13,7 +13,7 @@ use Stater\AbstractObjectFactory;
  */
 class Factory extends AbstractObjectFactory
 {
-    protected function getObject($data)
+    protected function getObject(?array $data)
     {
         return (new Event())->create($data);
     }

@@ -55,7 +55,7 @@ class Event extends AbstractObject
     /**
      * @inheritdoc
      */
-    public function getObjects()
+    public function getObjects(): array
     {
         return $this->events;
     }

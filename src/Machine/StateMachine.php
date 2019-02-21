@@ -90,7 +90,7 @@ class StateMachine implements StateMachineInterface, Map, TransitionObject
      * @param  array $parameters
      * @return bool
      */
-    public function with(array $parameters = [])
+    public function with(array $parameters = []): bool
     {
         if (null == $this->moveTo || null == $this->transition) {
             return false;
@@ -116,7 +116,7 @@ class StateMachine implements StateMachineInterface, Map, TransitionObject
      * @param  $callback
      * @return mixed
      */
-    private function apply($callback)
+    private function apply($callback): bool
     {
         $result = $this->transition->callback($callback);
 
@@ -133,7 +133,7 @@ class StateMachine implements StateMachineInterface, Map, TransitionObject
      * @param  string  $next
      * @return StateMachine
      */
-    private function move($initial, string $next)
+    private function move($initial, string $next): self
     {
         $map = $this->getMap();
 

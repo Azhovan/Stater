@@ -55,7 +55,7 @@ class State extends AbstractObject
     /**
      * @inheritdoc
      */
-    public function getObjects()
+    public function getObjects(): array
     {
         return $this->states;
     }

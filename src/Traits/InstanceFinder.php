@@ -14,7 +14,7 @@ trait InstanceFinder
      * @param  $object
      * @return $this
      */
-    public function object($object)
+    public function object($object): self
     {
         $this->object = $object;
 
@@ -25,7 +25,7 @@ trait InstanceFinder
      * @param  string $class
      * @return bool
      */
-    public function instanceOf(string $class)
+    public function instanceOf(string $class): bool
     {
         return $this->object instanceof $class;
     }

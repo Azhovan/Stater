@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stater\Machine;
 
+use Stater\AbstractObject;
 use Stater\Events\Factory as EventFactory;
 use Stater\States\Factory as StateFactory;
 
@@ -71,7 +72,7 @@ class Factory
      * @param $states
      * @param $event
      */
-    private function make($entry, $states, $event)
+    private function make($entry, $states, $event): void
     {
         $states = $states->getObjects();
 
@@ -96,7 +97,7 @@ class Factory
      *
      * @return mixed
      */
-    private function states(...$entry)
+    private function states(...$entry): AbstractObject
     {
         $states = [];
 
@@ -134,7 +135,7 @@ class Factory
      *
      * @return mixed
      */
-    private function events(...$entry)
+    private function events(...$entry): AbstractObject
     {
         $events = [];
 
@@ -168,7 +169,7 @@ class Factory
      *
      * @return array
      */
-    public function get()
+    public function get(): array
     {
         return $this->machine->get();
     }

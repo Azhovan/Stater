@@ -33,8 +33,12 @@ class Entity implements EntityInterface
         $this->setType();
     }
 
-
-    public function setType()
+    /**
+     * Set the default type of entity object
+     *
+     * @return  void
+     */
+    public function setType(): void
     {
         $this->entityObject->type = $this->getType();
     }
@@ -44,7 +48,7 @@ class Entity implements EntityInterface
      *
      * @return mixed
      */
-    public function getType()
+    public function getType(): string
     {
         return "state";
     }
