@@ -288,7 +288,7 @@ This option is useful when you need to create whole the state machine in one ste
 ```php
 
 // Create simple state machine with single entry
-$machine = (new MachineFactory())->create([
+$machine = (new Stater\Machine\Factory())->create([
         [
             "state" => ["name" => "state1", "data" => ""],
             "event" => ["name" => "event1", "data" => ""],
